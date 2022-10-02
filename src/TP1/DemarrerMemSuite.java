@@ -76,11 +76,10 @@ public class DemarrerMemSuite {
 			etatJeu.ilYaSequence = true;
 			etatJeu.longueurSequence = 0;
 			stats.nbEssaieActuel = 0;			
-
-
+			
 			// Brasse les cartes, affiche le jeu et le cache ensuite.
 			UtilitaireJeu.initialiserJeu(jeuNeuf, cartesAffichees, gui, etatJeu);
-
+			
 			/*
 			 * Tant que toutes les cartes ne sont pas tourn�es ou que 
 			 * l'utilisateur n'a  pas quitt�, on continue.
