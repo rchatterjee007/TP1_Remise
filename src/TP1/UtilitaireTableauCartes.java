@@ -75,66 +75,60 @@ public class UtilitaireTableauCartes {
 		}
 		return listeCartes2D;
 	}
-public static Carte[] sousTabCarte(Carte [] tabCarteOriginale, int indiceDebut, int indiceFin){
-	
-		
+	public static Carte[] separerCartesEn2(Carte [] tabCarteOriginale, int indiceDebut, int indiceFin){
 		Carte[] sousTab = new Carte[indiceFin - indiceDebut + 1];
 		int j = 0;
 		for(int i  = indiceDebut; i <= indiceFin; i++){
 			sousTab[j] = tabCarteOriginale[i];
-		    j++;                                              
+			j++;                                              
 		}
 		return sousTab;
 	}
-	
+
 	public static void brasser(Carte[] cartes){	
 		// Générer un nombre aléatoire de fois que vous répéterez les trois étapes.
 		int nbrAlea=UtilitaireFonction.alea(NOMBRE_MIN, NOMBRE_MAX);
 		int i=0;	
-		
-		
+
+
 		// REPETER LE M/LANGE POUR LE X NOMBRE DE FOIS
 		while (i!=nbrAlea){
-			
-			
-			//DIVISER LE PAQUET DE CARTES EN 2
+
+			melanger(cartes);//melanger les cartes
+
+			//Separer LE PAQUET DE CARTES EN 2
 			int indiceTab1=UtilitaireFonction.alea(20, 30);
-			Carte [] tab1= sousTabCarte(cartes,0,indiceTab1); 
-			Carte [] tab2= sousTabCarte(cartes,indiceTab1+1,cartes.length-1); 
-				
-			melanger(tab1,tab2);
-			//separerPaquet(tailleTab1,tailleTab2);
+			Carte [] tab1= separerCartesEn2(cartes,0,indiceTab1); 
+			Carte [] tab2= separerCartesEn2(cartes,indiceTab1+1,cartes.length-1); 
+
 			fusionner();
 			i++;
 		}
 	}
-	
+
 	public static void deplacerCartes(Carte [] tab1) {
 		Carte valueBeingMoved = tab1[tab1.length-1];
-		  for (int i=tab1.length-1;i>0;i--) {
-			  tab1[i] = tab1[i-1];
-		  }
-		  tab1[0] = valueBeingMoved;
-		
-		
+		for (int i=tab1.length-1;i>0;i--) {
+			tab1[i] = tab1[i-1];
+		}
+		tab1[0] = valueBeingMoved;
+
+
 	}
-	
-	public static void melanger(Carte [] tab1,Carte [] tab2) {
+
+	public static void melanger(Carte [] tab) {
 		int nbrFoisMelanger= UtilitaireFonction.alea(NOMBRE_MIN, NOMBRE_MAX);
 		int i=0;
 
 		while (i!=nbrFoisMelanger){
 			int nbrCartesDeplacer=UtilitaireFonction.alea(3, 10);
 			for(i=0;i<nbrCartesDeplacer;i++) {
-				deplacerCartes(tab1);
-				deplacerCartes(tab2);
+				deplacerCartes(tab);
 			}
 			i++;
-		}
-		
+		}	
 	}
-	public static void separerPaquet(int tailleTab1, int tailleTab2) {
-	}
+
 	public static void fusionner() {
 	}
 	
