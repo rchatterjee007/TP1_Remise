@@ -15,7 +15,12 @@ public class UtilitaireTableauCartes {
 	public static Boolean toutesLesCartesSontTournee(Carte[] cartesAffichees) {
 		Boolean carteVisible = true;
 		for(int i=0; i<cartesAffichees.length; i++) {
-			carteVisible = cartesAffichees[i].visible;
+			
+			if(!cartesAffichees[i].visible) {
+				carteVisible = false;
+				break;
+			}
+			
 		}
 		
 		return carteVisible;
