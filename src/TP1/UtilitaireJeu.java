@@ -1,5 +1,10 @@
 package TP1;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.Timer;
+
 public class UtilitaireJeu {
 
 	public UtilitaireJeu() {
@@ -7,7 +12,10 @@ public class UtilitaireJeu {
 		
 	}
 	public static void initialiserJeu(Carte[] jeu, Carte[] carteAfficher, GrilleGui gui, EtatJeu etatjeu) {
-		UtilitaireGrilleGui.afficherCartes(carteAfficher, gui);
+		
+		
+		UtilitaireTableauCartes.afficherCartes(carteAfficher, gui);
+		timerPourCacherCartes(gui);
 		
 	}
 	public static void effectuerUnTour(Carte[] cartes, GrilleGui gui, Stats stats, EtatJeu etatJeu) {
@@ -18,5 +26,18 @@ public class UtilitaireJeu {
 	}
 	public static void montrerIndices(Carte[] cartes, GrilleGui gui, EtatJeu etatJeu) {
 
+	}
+	
+	private static void timerPourCacherCartes(GrilleGui gui) {
+		Timer timer = new Timer(5000, new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				UtilitaireGrilleGui.cacherCartes(gui);
+				
+			}
+		});
+		timer.setRepeats(false);
+		timer.start();
 	}
 }
