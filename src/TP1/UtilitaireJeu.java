@@ -12,9 +12,9 @@ public class UtilitaireJeu {
 		
 	}
 	public static void initialiserJeu(Carte[] jeu, Carte[] carteAfficher, GrilleGui gui, EtatJeu etatjeu) {
-		
-		
+		//carteAfficher= UtilitaireTableauCartes.brasser(carteAfficher);
 		UtilitaireTableauCartes.afficherCartes(carteAfficher, gui);
+		UtilitaireGrilleGui.cacherCartes(gui);
 		timerPourCacherCartes(gui);
 		
 	}
