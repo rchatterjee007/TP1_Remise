@@ -84,15 +84,6 @@ public class UtilitaireTableauCartes {
 		}
 		return sousTab;
 	}
-public static Carte[] separerCartesEn2(Carte [] tabCarteOriginale, int indiceDebut, int indiceFin){
-		Carte[] sousTab = new Carte[indiceFin - indiceDebut + 1];
-		int j = 0;
-		for(int i  = indiceDebut; i <= indiceFin; i++){
-			sousTab[j] = tabCarteOriginale[i];
-			j++;                                              
-		}
-		return sousTab;
-	}
 	public static Carte[] brasser(Carte[] cartes){	
 		// Générer un nombre aléatoire de fois que vous répéterez les trois étapes.
 		int nbrAlea=UtilitaireFonction.alea(NOMBRE_MIN, NOMBRE_MAX);
