@@ -15,6 +15,7 @@ public class UtilitaireGrilleGui {
 	 * @param gui Le gui
 	 */
 	public static void afficherCartes(Carte[][] listeCarte, GrilleGui gui) {
+		
 		Carte carte = new Carte();
 		for(int y=0; y< gui.getNbLignes(); y++) {
 			
