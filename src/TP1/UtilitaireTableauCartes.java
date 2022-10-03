@@ -134,7 +134,6 @@ public class UtilitaireTableauCartes {
 		
 
 	public static Carte[] separerCartesEn2(Carte [] tabCarteOriginale, int indiceDebut, int indiceFin){
-
 		Carte[] sousTab = new Carte[indiceFin - indiceDebut + 1];
 		int j = 0;
 		for(int i  = indiceDebut; i <= indiceFin; i++){
@@ -154,7 +153,7 @@ public class UtilitaireTableauCartes {
 			int indiceTab1=UtilitaireFonction.alea(20, 30);
 			Carte [] tab1= separerCartesEn2(cartes,0,indiceTab1); 
 			Carte [] tab2= separerCartesEn2(cartes,indiceTab1+1,cartes.length-1); 
-			nouvTabCarte=fusionner(cartes, tab1, tab2);
+			nouvTabCarte=fusionner(cartes.length, tab1, tab2);
 			i++;
 		}
 		return nouvTabCarte;
@@ -178,14 +177,8 @@ public class UtilitaireTableauCartes {
 			i++;
 		}	
 	}
-
-
-	
-	public static void separerPaquet(int tailleTab1, int tailleTab2) {
-	}
-
-	public static Carte[]  fusionner(Carte [] cartesOriginales, Carte [] tab1, Carte [] tab2) {
-		Carte[] tabCartesAfficher= new Carte [cartesOriginales.length];
+	public static Carte[]  fusionner(int tailleTabCartesOriginale, Carte [] tab1, Carte [] tab2) {
+		Carte[] tabCartesAfficher= new Carte [tailleTabCartesOriginale];
 		int iterateurTab1=0;
 	    int iterateurTab2=0;
 	    int iteratuerTabCartesFinale=0;
@@ -203,9 +196,52 @@ public class UtilitaireTableauCartes {
 	        }
 	    }
 		return tabCartesAfficher;
-
 	}
+	public static Carte[] brasserParPaquet(Carte []cartes) {
+		int nbrPaquetAlea= UtilitaireFonction.alea(6, 8);
+		int indexDebut=0;	
+		int indexFin=0;
+		Carte [][] cartes2D = new Carte[nbrPaquetAlea+1][];
+		
 	
+		for(int i=0;i<nbrPaquetAlea;i++) {
+			indexFin=indexDebut+7;
+			cartes2D[i]=separerCartesEn2(cartes,indexDebut,indexFin);
+		}
+		
+		
+		cartes2D[nbrPaquetAlea+1]=separerCartesEn2(cartes,indexFin,cartes.length-1);
+		while(estVide(cartes2D)==false) {
+			int nbrDuPaquet=UtilitaireFonction.alea(0,nbrPaquetAlea);
+			if(paquetValide(cartes2D,nbrDuPaquet)) {
+				int taille=cartes2D[nbrPaquetAlea+1].length+cartes2D[nbrDuPaquet].length;		
+				cartes2D[cartes2D.length-1]=fusionner(taille,cartes2D[nbrPaquetAlea+1],cartes2D[nbrDuPaquet]);
+				cartes2D[nbrDuPaquet+1]=null;
+			}
+			
+		}
+		return cartes2D[cartes2D.length-1];
+		
+		
+		
+	}
+	public static boolean paquetValide(Carte[][] cartes, int nbrPaquet) {
+		return cartes[nbrPaquet]!=null;
+	}
+	public static boolean estVide(Carte [][] cartes) {
+		boolean estVide=false;
+		while(estVide=false) {
+			for(int i=0;i<cartes.length-1;i++) {
+				if(cartes[i]!=null) {
+					estVide=false;
+				}
+				if(cartes[i]==null) {
+					estVide=true;
+				}
+			}
+		}
+		return estVide;
+	}
 	
 
 }
