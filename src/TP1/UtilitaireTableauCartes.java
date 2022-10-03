@@ -13,21 +13,44 @@ public class UtilitaireTableauCartes {
 		
 	}
 	
-	public static Carte[] copieDuJeu(Carte[] jeuneuf) {
-		return jeuneuf;
-	}
-	public static Boolean toutesLesCartesSontTournee(Carte[] cartesAffichees) {
-		Boolean carteVisible = true;
-		for(int i=0; i<cartesAffichees.length; i++) {
+	public static Carte[] mélangerParPositionAleatoire(Carte[] cartes) {
+		
+		Carte[] cartesTemporaire = new Carte[Constantes.NB_CARTES];
+		int chiffreAleatoire;
+		for(int i=0; i<cartes.length; i++) {
 			
-			if(!cartesAffichees[i].visible) {
-				carteVisible = false;
+			do {
+			chiffreAleatoire = UtilitaireFonction.alea(0, Constantes.NB_CARTES-1);
+				
+			}while(cartesTemporaire[chiffreAleatoire] != null);
+			
+			cartesTemporaire[chiffreAleatoire] = cartes[i];
+		}
+		
+		
+		return cartesTemporaire;
+	}
+	public static Carte[] copieDuJeu(Carte[] jeuneuf) {
+		Carte[] cartesCopie = new Carte[jeuneuf.length];
+		for(int i = 0; i<jeuneuf.length; i++) {
+			cartesCopie[i] = jeuneuf[i];
+		}
+		return cartesCopie;
+	}
+	
+	
+	public static Boolean toutesLesCartesSontTournee(Carte[] cartes) {
+		Boolean toutesLesCartesSontTournee = false;
+		for(int i=0; i<cartes.length; i++) {
+			
+			if(cartes[i].visible) {
+				toutesLesCartesSontTournee = true;
 				break;
 			}
 			
 		}
 		
-		return carteVisible;
+		return toutesLesCartesSontTournee;
 	}
 	
 	public static Boolean deuxCartesSeSuivent(Carte carte1, Carte carte2) {
@@ -37,6 +60,7 @@ public class UtilitaireTableauCartes {
 		int numeroCarte2 = carte2.numero;
 		Sorte sorteCarte1 = carte1.couleur;
 		Sorte sorteCarte2 = carte2.couleur;
+		
 		if(numeroCarte1 == numeroCarte2++ && sorteCarte1 == sorteCarte2) {
 		return carteSeSuivent;
 		}else {
@@ -44,24 +68,46 @@ public class UtilitaireTableauCartes {
 		}
 	}
 	
-	public static Carte[] modifierVisibiliteCartes(Carte[] cartesAffichees) {
-		for(int i=0; i<cartesAffichees.length; i++) {
-			cartesAffichees[i].visible = false;
+	public static Carte modifierVisibiliteCarte(Carte carte) {
+		
+		
+		if(carte.visible == false) {
+			carte.visible = true;
+		}else {
+			carte.visible = false;
 		}
-		return cartesAffichees;
+		
+		return carte;
 	}
 	
 
-	public static void afficherCartes(Carte[] carteAfficher, GrilleGui gui) {
-		
-		Carte[][] listeCarte2D = transformerCarteListeEn2DPourGui(carteAfficher, gui);
+	public static void afficherCartes(Carte[] cartes, GrilleGui gui) {
+
+		Carte[][] listeCarte2D = transformerCarteListeEn2DPourGui(cartes, gui);
 		
 		UtilitaireGrilleGui.afficherCartes(listeCarte2D, gui);
 		
 		
 	}
 	
-	private static Carte[][] transformerCarteListeEn2DPourGui(Carte[] carteAfficher, GrilleGui gui) {
+	
+	public static Carte[] rendreCartesNonVisible(Carte[] cartes) {
+			
+		for(int i=0; i<cartes.length; i++) {
+			cartes[i].visible = false;
+		}
+		return cartes;
+	}
+	
+	public static Carte[] rendreCartesVisble(Carte[] cartes) {
+		
+		for(int i=0; i<cartes.length; i++) {
+			cartes[i].visible = true;
+		}
+		return cartes;
+	}
+	
+	private static Carte[][] transformerCarteListeEn2DPourGui(Carte[] cartes, GrilleGui gui) {
 		int positionListeCarte = 0;
 		Carte[][] listeCartes2D = new Carte[gui.getNbLignes()][gui.getNbColonnes()];
 		
@@ -69,7 +115,7 @@ public class UtilitaireTableauCartes {
 			
 			for(int i=0; i< gui.getNbColonnes(); i++) {
 				
-				Carte carte = carteAfficher[positionListeCarte];
+				Carte carte = cartes[positionListeCarte];
 				 
 				listeCartes2D[y][i] = carte;
 				
@@ -80,7 +126,8 @@ public class UtilitaireTableauCartes {
 		}
 		return listeCartes2D;
 	}
-public static Carte[] sousTabCarte(Carte [] tabCarteOriginale, int indiceDebut, int indiceFin){
+	
+	public static Carte[] sousTabCarte(Carte [] tabCarteOriginale, int indiceDebut, int indiceFin){
 	
 		
 		Carte[] sousTab = new Carte[indiceFin - indiceDebut + 1];
@@ -138,6 +185,8 @@ public static Carte[] sousTabCarte(Carte [] tabCarteOriginale, int indiceDebut, 
 		}
 		
 	}
+
+	
 	public static void separerPaquet(int tailleTab1, int tailleTab2) {
 	}
 	public static void fusionner() {
