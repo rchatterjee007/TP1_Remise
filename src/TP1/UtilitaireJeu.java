@@ -7,7 +7,7 @@ import javax.swing.JOptionPane;
  * Gère les étapes du jeu : l'initialisation d'une partie, 
  * l'affichage des messages, l'affichage des cartes et leur visibilité
  * et gère les tours du jeu.
- * @author Simon Pitre Lamas, Radhika Catherjee
+ * @author Simon Pitre Lamas, Radhika Chatterjee
  */
 public class UtilitaireJeu {
 	
