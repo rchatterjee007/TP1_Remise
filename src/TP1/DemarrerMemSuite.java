@@ -46,7 +46,7 @@ public class DemarrerMemSuite {
 	 * bouton de menu ou sur une carte. 
 	 */
 	public static void main(String[] args) {
-			
+		
 		// Cr�ation de l'interface graphique qui permet de voir les cartes 
 		// et de jouer.
 		GrilleGui gui = new GrilleGui(Constantes.NB_SORTES, 
@@ -69,7 +69,7 @@ public class DemarrerMemSuite {
 		etatJeu.tabSequence =  new int[Constantes.CARTES_PAR_SORTES];
 
 		// Boucle qui se termine si l'utilisateur quitte 
-		// en cliquant sur X ou le bouton quitter.
+		// en cliquant sur X ou le bouton quittergithu.
 		while(!etatJeu.partieTerminee){
 
 			// � faire entre chaque partie.

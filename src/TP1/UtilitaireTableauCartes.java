@@ -40,15 +40,19 @@ public class UtilitaireTableauCartes {
 	
 	
 	public static Boolean toutesLesCartesSontTournee(Carte[] cartes) {
-		Boolean toutesLesCartesSontTournee = false;
-		for(int i=0; i<cartes.length; i++) {
+		Boolean toutesLesCartesSontTournee = true;
+		
+		int indexCarte = 0;
+		
+		while(indexCarte < cartes.length && toutesLesCartesSontTournee != false) {
 			
-			if(cartes[i].visible) {
-				toutesLesCartesSontTournee = true;
+			if(!cartes[indexCarte].visible) {
+				toutesLesCartesSontTournee = false;
 				break;
 			}
-			
+			indexCarte++;
 		}
+
 		
 		return toutesLesCartesSontTournee;
 	}

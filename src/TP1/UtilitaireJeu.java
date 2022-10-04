@@ -21,7 +21,8 @@ public class UtilitaireJeu {
 		UtilitaireTableauCartes.afficherCartes(jeu, gui);
 		
 		//Message à l'utilisateur
-		messagePretAJouer();
+		String message = "Vous avez quelques secondes pour mémoriser les cartes";	
+		afficherMessage(message);
 		
 		//Copier le jeu de cartes à afficher dans un tableau de cartes temporaire.
 		Carte[] cartesTemporaire = new Carte[carteAfficher.length];
@@ -52,23 +53,22 @@ public class UtilitaireJeu {
 		
 	}
 	public static void montrerLesCartes(Carte[] cartes, GrilleGui gui, EtatJeu etatJeu) {
-		
+		UtilitaireTableauCartes.afficherCartes(cartes, gui);
 	}
 	public static void montrerIndices(Carte[] cartes, GrilleGui gui, EtatJeu etatJeu) {
-
+		String message = "Votre nombre d'indice est  : "+etatJeu.nbIndices;	
+		afficherMessage(message);
 	}
-	public static void messagePretAJouer() {
+	
+	
+	
+	public static void afficherMessage(String message) {
 		
 		JOptionPane.showMessageDialog(null, 
-				genererMessagePretAJouer());
+				message);
 		
 	}
-	private static String genererMessagePretAJouer() {
-		
-		String message = "Vous avez quelques secondes pour mémoriser les cartes";		
-		return message;
-		
-	}
+
 	private static void timerPourAfficherCartes(Carte[] cartes, GrilleGui gui) {
 		Timer timer = new Timer(Constantes.TEMPS_VISIONNEMENT, new ActionListener() {
 
