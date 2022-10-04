@@ -2,20 +2,34 @@ package TP1;
 
 import javax.swing.JOptionPane;
 
+/**
+ * Gère l'affichage des statistiques.
+ * @author Simon Pitre Lamas, Radhika Catherjee
+ *
+ */
 public class UtilitaireStats {
 
-	public UtilitaireStats() {
-		// TODO Auto-generated constructor stub
-	}
+
 	public static void ajusterStatsNouvellePartie(Stats stats) {
 		
 	}
+	/**
+	 * Affiche les statistiques avec un message interactif.
+	 * @param stats Statistique du jeu
+	 */
 	public static void montrerStats(Stats stats) {
 		
 		JOptionPane.showMessageDialog(null, 
 				genererMessageStats(stats));
 		
 	}
+	/**
+	 * Génère un message représentant les statistiques de la partie tel que :
+	 * le nombre d'essaie, la séquence, le nombre de réussites et la moyenne
+	 * des essais par partie.
+	 * @param stats Statistique du jeu.
+	 * @return Un message à afficher.
+	 */
 	private static String genererMessageStats(Stats stats) {
 		
 		double moyenneEssaisParParties = stats.nbEssaiesTotal/stats.nbReussites;
