@@ -137,8 +137,8 @@ public class UtilitaireTableauCartes {
 	}
 		
 
-	public static Carte[] separerCartesEn2(Carte [] tabCarteOriginale, int indiceDebut, int indiceFin){
-
+		public static Carte[] separerCartesEn2(Carte [] tabCarteOriginale, 
+			int indiceDebut, int indiceFin){
 		Carte[] sousTab = new Carte[indiceFin - indiceDebut + 1];
 		int j = 0;
 		for(int i  = indiceDebut; i <= indiceFin; i++){
@@ -148,7 +148,7 @@ public class UtilitaireTableauCartes {
 		return sousTab;
 	}
 	public static Carte[] brasser(Carte[] cartes){	
-		// Générer un nombre aléatoire de fois que vous répéterez les trois étapes.
+
 		int nbrAlea=UtilitaireFonction.alea(NOMBRE_MIN, NOMBRE_MAX);
 		Carte[]nouvTabCarte=new Carte[cartes.length];
 		int i=0;	
@@ -157,8 +157,9 @@ public class UtilitaireTableauCartes {
 			//Separer LE PAQUET DE CARTES EN 2
 			int indiceTab1=UtilitaireFonction.alea(20, 30);
 			Carte [] tab1= separerCartesEn2(cartes,0,indiceTab1); 
-			Carte [] tab2= separerCartesEn2(cartes,indiceTab1+1,cartes.length-1); 
-			nouvTabCarte=fusionner(cartes, tab1, tab2);
+			Carte [] tab2= separerCartesEn2(cartes,indiceTab1+1,
+					cartes.length-1); 
+			nouvTabCarte=fusionner(cartes.length, tab1, tab2);
 			i++;
 		}
 		return nouvTabCarte;
@@ -173,7 +174,7 @@ public class UtilitaireTableauCartes {
 	public static void melanger(Carte [] tab) {
 		int nbrFoisMelanger= UtilitaireFonction.alea(NOMBRE_MIN, NOMBRE_MAX);
 		int i=0;
-		
+
 		while (i!=nbrFoisMelanger){
 			int nbrCartesDeplacer=UtilitaireFonction.alea(3, 10);
 			for(int j=0;j<nbrCartesDeplacer;j++) {
@@ -182,34 +183,76 @@ public class UtilitaireTableauCartes {
 			i++;
 		}	
 	}
-
-
-	
-	public static void separerPaquet(int tailleTab1, int tailleTab2) {
-	}
-
-	public static Carte[]  fusionner(Carte [] cartesOriginales, Carte [] tab1, Carte [] tab2) {
-		Carte[] tabCartesAfficher= new Carte [cartesOriginales.length];
+	public static Carte[]  fusionner(int tailleTabCartesOriginale, 
+			Carte [] tab1, Carte [] tab2) {
+		Carte[] tabCartesAfficher= new Carte [tailleTabCartesOriginale];
 		int iterateurTab1=0;
-	    int iterateurTab2=0;
-	    int iteratuerTabCartesFinale=0;
-	    while(iteratuerTabCartesFinale<tabCartesAfficher.length){
-	    	int nbrPairOuImpaire=UtilitaireFonction.alea(0,10);
-	       	if (nbrPairOuImpaire%2==0&&iterateurTab1<tab1.length){
-	       		tabCartesAfficher[iteratuerTabCartesFinale]=tab1[iterateurTab1];
-	       		iterateurTab1++;
-	       		iteratuerTabCartesFinale++;
-	       	}
-	       	if(nbrPairOuImpaire%2==1&&iterateurTab2<tab2.length){
-	       		tabCartesAfficher[iteratuerTabCartesFinale]=tab2[iterateurTab2];
-	       		iterateurTab2++;
-	       		iteratuerTabCartesFinale++;
-	        }
-	    }
+		int iterateurTab2=0;
+		int iteratuerTabCartesFinale=0;
+		while(iteratuerTabCartesFinale<tabCartesAfficher.length){
+			int nbrPairOuImpaire=UtilitaireFonction.alea(0,10);
+			if (nbrPairOuImpaire%2==0&&iterateurTab1<tab1.length){
+				tabCartesAfficher[iteratuerTabCartesFinale]=tab1[iterateurTab1];
+				iterateurTab1++;
+				iteratuerTabCartesFinale++;
+			}
+			if(nbrPairOuImpaire%2==1&&iterateurTab2<tab2.length){
+				tabCartesAfficher[iteratuerTabCartesFinale]=tab2[iterateurTab2];
+				iterateurTab2++;
+				iteratuerTabCartesFinale++;
+			}
+		}
 		return tabCartesAfficher;
+	}
+	public static Carte[] brasserParPaquet(Carte []cartes) {
+		int nbrPaquetAlea= UtilitaireFonction.alea(6, 8);
+		Carte [][] cartes2D = new Carte[nbrPaquetAlea+1][cartes.length];
+		cartes2D[cartes2D.length-1]=cartes;
+		cartes2D=distrubuerCartesAuDebut(cartes2D);
+		while(paquetCartesRestant(cartes2D)!=true) {
+			int nbrAleatoireIndexPaquet= UtilitaireFonction.alea(0, nbrPaquetAlea);
+			if(cartes2D[nbrAleatoireIndexPaquet]!=null) {
+				mettrePaquetAViderAuDernierIndice(cartes2D,nbrAleatoireIndexPaquet);
+				cartes2D=distrubuerCartesAuDebut(cartes2D);
+			}
+		}
+		return cartes2D[cartes2D.length-1];
+	}
 
+	public static boolean paquetCartesRestant(Carte[][] cartes) {
+		boolean vide = false;
+		for (int i=0; i<cartes.length-1; i++) {
+			if (cartes[i] != null) {
+				vide = false;
+				break;
+			}
+			else {
+				vide=true;
+			}
+		}
+		return vide;
+	}
+
+	public static Carte[][] distrubuerCartesAuDebut(Carte[][] cartes2D) {
+		int iterateurCarte=0;
+		int iterateurPaquet=0;
+		Carte [] cartes= cartes2D[cartes2D.length-1];		
+		while(iterateurCarte<cartes.length) {	
+			for(int i=0;i<cartes2D.length-1;i++) {
+				while(iterateurCarte<cartes.length) {
+					cartes2D[i][iterateurPaquet]=cartes[iterateurCarte];
+					iterateurCarte++;
+				}		
+			}
+			iterateurPaquet++;
+		}
+		return cartes2D;
 	}
 	
-	
-
+	public static void mettrePaquetAViderAuDernierIndice(Carte[][] cartes2D, int index) {
+		Carte [] cartes= cartes2D[index];
+		cartes2D[cartes2D.length-1]=cartes;
+		cartes2D[index]=null;
+		
+	}
 }
