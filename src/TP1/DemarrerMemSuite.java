@@ -46,7 +46,7 @@ public class DemarrerMemSuite {
 	 * bouton de menu ou sur une carte. 
 	 */
 	public static void main(String[] args) {
-			
+
 		// Cr�ation de l'interface graphique qui permet de voir les cartes 
 		// et de jouer.
 		GrilleGui gui = new GrilleGui(Constantes.NB_SORTES, 
@@ -60,11 +60,11 @@ public class DemarrerMemSuite {
 		// neuf et on travaille sur une copie.
 		Carte[] jeuNeuf = UtilitaireSysteme.obtenirJeuCartesNeuf();
 		Carte[] cartesAffichees = UtilitaireTableauCartes.copieDuJeu(jeuNeuf);
-		
+
 
 		// Retient l'�tat du jeu.
 		EtatJeu etatJeu = new EtatJeu();
-		
+
 		// Cr�ation du tableau de s�quences avec le maximum possible. 
 		etatJeu.tabSequence =  new int[Constantes.CARTES_PAR_SORTES];
 
@@ -76,10 +76,10 @@ public class DemarrerMemSuite {
 			etatJeu.ilYaSequence = true;
 			etatJeu.longueurSequence = 0;
 			stats.nbEssaieActuel = 0;			
-			
+
 			// Brasse les cartes, affiche le jeu et le cache ensuite.
 			UtilitaireJeu.initialiserJeu(jeuNeuf, cartesAffichees, gui, etatJeu);
-			
+
 			/*
 			 * Tant que toutes les cartes ne sont pas tourn�es ou que 
 			 * l'utilisateur n'a  pas quitt�, on continue.
@@ -89,14 +89,14 @@ public class DemarrerMemSuite {
 			 * 
 			 */
 			while(!(UtilitaireTableauCartes
-							.toutesLesCartesSontTournee(cartesAffichees)  || 
-											etatJeu.partieTerminee)) {
+					.toutesLesCartesSontTournee(cartesAffichees)  || 
+					etatJeu.partieTerminee)) {
 
 				// Proc�dure locale.
 				gererClic(jeuNeuf, cartesAffichees, gui, stats, etatJeu);
 
 			}	
-			
+
 			// Si la boucle s'est termin�e, c'est parce que toutes les cartes 
 			// sont tourn�es ou que l'utilisateur a annul�.  S'il n'a pas 
 			// annul�, on le f�licite et on se pr�pare � la prochaine partie.
@@ -107,12 +107,12 @@ public class DemarrerMemSuite {
 								++ stats.nbReussites + " r�ussite(s)");
 
 				UtilitaireStats.ajusterStatsNouvellePartie(stats);
-				}			
+			}			
 		}
-		
+
 		// Ferme le GUI et termine l'application.
 		System.exit(0);
-}
+	}
 	/*
 	 * Permet � l'utilisateur de cliquer sur une carte ou sur un des 
 	 * boutons du menu.
@@ -138,7 +138,7 @@ public class DemarrerMemSuite {
 		else if(gui.optionMenuEstCliquee()) {
 
 			etatJeu.partieTerminee =
-				UtilitaireMenu.gererMenu(jeuNeuf, cartes, gui, stats, etatJeu);
+					UtilitaireMenu.gererMenu(jeuNeuf, cartes, gui, stats, etatJeu);
 		}
 	}	
 }

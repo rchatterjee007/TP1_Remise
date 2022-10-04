@@ -50,7 +50,7 @@ public class GrilleGui  implements Runnable{
 	 *                        de la position par son accesseur.
 	 */
 
-	 // On compose dans un cadre.
+	// On compose dans un cadre.
 	private JFrame cadre = new JFrame();
 
 	// La grille qui sera affich�e (classse interne d�crite � la fin).
@@ -61,8 +61,8 @@ public class GrilleGui  implements Runnable{
 
 	// Mis � vrai lors d'un clic et � faux dans getPosition().
 	private boolean estClique;
-		
-	
+
+
 	private JPanel panneauPrincipal ;
 
 	// La taille de l'�cran.
@@ -70,14 +70,14 @@ public class GrilleGui  implements Runnable{
 
 	// Retenir le tableau des options de menus.
 	private String [] tabMenus;
-	
+
 	// Pour les options de meus du panneau du bas.
 	private boolean estBoutonMenu;
-	
+
 	// Vaudra le bouton cliqu� s'il y a eu un clic sur un des boutons de menu
 	// et il est mis � null apr�s getOptionMenu().
 	private String optionClique;
-	
+
 	// Retenir le mode de fermeture d�sir�e.
 	private int modeFermeture;
 	/**
@@ -91,11 +91,11 @@ public class GrilleGui  implements Runnable{
 	 * @param tabMenus Les options du menu du bas
 	 */
 	public GrilleGui(int nbLignes, int nbColonnes) {
-		
+
 
 		// On retient les options du menu.
 		this.tabMenus = Constantes.TAB_OPTIONS_MENU;
-	
+
 		// On cr�e le tableau 2D (vide).
 		grille = new MonJButton[nbLignes][nbColonnes];
 
@@ -118,17 +118,17 @@ public class GrilleGui  implements Runnable{
 	 * @param temps 
 	 */
 	public void pause(int temps) {
-		
+
 		try {
 			Thread.sleep(temps);
-			
+
 		} catch (InterruptedException e) {
-			
+
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 	/**
 	 * Modifie l'image d'une case.  Si image est � null, la case est bleue.
 	 * 
@@ -136,11 +136,11 @@ public class GrilleGui  implements Runnable{
 	 * @param image L'image � y mettre.
 	 */
 	public void setImage(int ligne, int colonne, Icon image) {
-		
+
 		grille[ligne][colonne].setIcon(image);
-		
+
 	}
-		
+
 	/**
 	 * Accesseur de la position du dernier clic.  Ne tient pas compte s'il y a
 	 * eu un clic ou non.
@@ -163,23 +163,23 @@ public class GrilleGui  implements Runnable{
 	public boolean optionMenuEstCliquee(){
 		return estBoutonMenu;
 	}
-	
+
 	/**
 	 * Retourne la derni�re option cliqu�e et null autrement.
 	 * 
 	 * @return Le texte dans le bouton cliqu� s'il y a lieu.
 	 */
 	public String getOptionMenuClique(){
-		
+
 		if(estBoutonMenu)
-		    estBoutonMenu = false;
+			estBoutonMenu = false;
 		else
 			optionClique = null;
-		
+
 		return optionClique;
 	}
-	
-	
+
+
 	/**
 	 * Accesseur du nombre de lignes.
 	 * 
@@ -197,8 +197,8 @@ public class GrilleGui  implements Runnable{
 	public int getNbColonnes() {
 		return grille[0].length;
 	}
-	
-	
+
+
 	/**
 	 * Retourne si un des boutons a �t� cliqu� depuis le dernier appel �
 	 * l'accesseur de position.
@@ -245,7 +245,7 @@ public class GrilleGui  implements Runnable{
 		}
 
 		else {
-			
+
 			// Le panneau du haut est plein �cran s'il n'y a pas de menu en bas.
 			panneauPrincipal.add(panneauHaut);
 		}
@@ -273,7 +273,7 @@ public class GrilleGui  implements Runnable{
 		// Les dimensions de panneau pour l'allure de la fen�tre.
 		dimensionner(panneauHaut, dh);
 		dimensionner(panneauBas, db);
-		
+
 		ajouterMenu(panneauBas);
 
 		panneauPrincipal.add(panneauHaut, BorderLayout.PAGE_START);
@@ -287,14 +287,14 @@ public class GrilleGui  implements Runnable{
 	 * @param dh La dimension voulue.
 	 */
 	private void dimensionner(JPanel panneau, Dimension dh) {
-		
+
 		panneau.setMinimumSize(dh);
 		panneau.setMaximumSize(dh);
 		panneau.setPreferredSize(dh);
-		
+
 	}
 
-	
+
 	/*
 	 * Ajoute des boutons de menu (S'il y en a) au panneau. 
 	 * 
@@ -326,7 +326,7 @@ public class GrilleGui  implements Runnable{
 		}
 
 	}
-	
+
 	/*
 	 * Ajoute les boutons dans la grille et dans le panneau.
 	 * 
@@ -334,21 +334,21 @@ public class GrilleGui  implements Runnable{
 	 */
 	private void ajouterBoutons(JPanel panneau){
 
-		
+
 		for(int i = 0; i < getNbLignes();i++) {
-			
+
 			for(int j = 0; j <getNbColonnes();j++){
-				
+
 				grille[i][j] =  new MonJButton(i,j, " ",  
 						Color.BLACK, Color.BLUE, null);
-				
+
 				panneau.add(grille[i][j]);
 			}	
 		}
 	}
 
-	
-	
+
+
 	/**
 	 * Classe interne qui ajoute � un JButton la position (x,y) o� il se trouve 
 	 * dans la grille.
@@ -359,7 +359,7 @@ public class GrilleGui  implements Runnable{
 
 		// Juste enlever le warning.
 		private static final long serialVersionUID = 1L;
-		
+
 		// Coordonn�e ligne colonne du bouton dans le GUI.
 		private int ligne;
 		private int colonne;
@@ -398,7 +398,7 @@ public class GrilleGui  implements Runnable{
 					dernierClic =  new Coordonnee();
 					dernierClic.ligne = b.ligne;
 					dernierClic.colonne = b.colonne;
-					
+
 					estClique = true;		
 					estBoutonMenu = false;
 				}	

@@ -12,8 +12,8 @@ import javax.swing.JOptionPane;
  * Version : Copyright A2022
  */
 public class UtilitaireMenu {
-	
-	
+
+
 	/*
 	 * V�rifie quelle option de menu a �t� choisie et d�marre la bonne
 	 * fonctionnalit�.
@@ -42,40 +42,42 @@ public class UtilitaireMenu {
 		 *             Doit �tre modifi� si on ajoute des options de menu dans 
 		 *             le tableau-constante TAB_OPTIONS_MENU.
 		 */
-		
+
 		boolean partieTerminee = false;
-		
+
 		String reponse = gui.getOptionMenuClique();
-		
+
 		// Selon les versions de Java, switch-case sur des String ne 
 		// fonctionne pas toujours.
-		if (reponse. equals(Constantes.TAB_OPTIONS_MENU[Constantes.NOUVELLE_PARTIE])) {
+		if (reponse. equals(Constantes.TAB_OPTIONS_MENU[Constantes.
+		                                                NOUVELLE_PARTIE])) {
 
 			UtilitaireJeu.initialiserJeu(jeuNeuf, cartes,gui, etatJeu);
 		}
-		
-		else if(reponse.equals(Constantes.TAB_OPTIONS_MENU[Constantes.CARTE])) {
+
+		else if(reponse.equals(Constantes.TAB_OPTIONS_MENU[Constantes.CARTE])){
 
 			UtilitaireJeu.montrerLesCartes(cartes, gui, etatJeu);
-				
+
 		}
 
-		else if(reponse.equals(Constantes.TAB_OPTIONS_MENU[Constantes.INDICE])) {
+		else if(reponse.equals(Constantes.TAB_OPTIONS_MENU[Constantes.INDICE])){
 
-				
+
 			UtilitaireJeu.montrerIndices(cartes, gui, etatJeu);
 		}
 
-		else if(reponse.equals(Constantes.TAB_OPTIONS_MENU[Constantes.STATS])) {
+		else if(reponse.equals(Constantes.TAB_OPTIONS_MENU[Constantes.STATS])){
 
 			UtilitaireStats.montrerStats(stats);
 		}
-		
-		else if(reponse.equals(Constantes.TAB_OPTIONS_MENU[Constantes.QUITTER])) {
+
+		else if(reponse.equals(Constantes.TAB_OPTIONS_MENU[Constantes.
+		                                                   QUITTER])){
 
 			partieTerminee = true;
 		}
-		
+
 		return partieTerminee;
 	}
 }
