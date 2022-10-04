@@ -2,7 +2,7 @@ package TP1;
 
 /**
  * Gère l'affichage des cartes selon leur visibilité
- * @author Simon Pitre Lamas, Radhika Catherjee
+ * @author Simon Pitre Lamas, Radhika Chatterjee
  *
  */
 public class UtilitaireGrilleGui {
