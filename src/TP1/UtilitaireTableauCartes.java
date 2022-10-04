@@ -3,7 +3,7 @@ package TP1;
 import TP1.Constantes.Sorte;
 
 public class UtilitaireTableauCartes {
-	// CONSTANTS qui determine le nombre de fois que les cartes seront brasses
+	// CONSTANTS qui determine le nombre de fois que les cartes seront brasses.
 		final static int NOMBRE_MAX=5;
 		final static int NOMBRE_MIN=1;
 
