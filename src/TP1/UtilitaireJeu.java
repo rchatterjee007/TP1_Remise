@@ -13,8 +13,14 @@ public class UtilitaireJeu {
 		
 	}
 	public static void initialiserJeu(Carte[] jeu, Carte[] carteAfficher, GrilleGui gui, EtatJeu etatjeu) {
+    
+    
+    //carteAfficher= UtilitaireTableauCartes.brasser(carteAfficher);
+		//UtilitaireTableauCartes.afficherCartes(carteAfficher, gui);
+		//UtilitaireGrilleGui.cacherCartes(gui);
+		//timerPourCacherCartes(gui);
 		
-		//Brasser les cartes
+		//Melanger les cartes
 		carteAfficher = UtilitaireTableauCartes.mélangerParPositionAleatoire(carteAfficher);
 		
 		//Afficher les cartes du jeu neuf.
@@ -47,6 +53,7 @@ public class UtilitaireJeu {
 		//Afficher les carte temporaire
 		UtilitaireTableauCartes.afficherCartes(cartesTemporaire, gui);
 		
+
 		
 	}
 	public static void effectuerUnTour(Carte[] cartes, GrilleGui gui, Stats stats, EtatJeu etatJeu) {
