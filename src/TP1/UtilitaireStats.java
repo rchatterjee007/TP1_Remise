@@ -4,7 +4,7 @@ import javax.swing.JOptionPane;
 
 /**
  * Gère l'affichage des statistiques.
- * @author Simon Pitre Lamas, Radhika Catherjee
+ * @author Simon Pitre Lamas, Radhika Chatterjee
  *
  */
 public class UtilitaireStats {
