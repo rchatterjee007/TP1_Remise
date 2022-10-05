@@ -204,55 +204,75 @@ public class UtilitaireTableauCartes {
 		}
 		return tabCartesAfficher;
 	}
-	public static Carte[] brasserParPaquet(Carte []cartes) {
+		public static Carte[] brasserParPaquet(Carte []cartes) {
 		int nbrPaquetAlea= UtilitaireFonction.alea(6, 8);
-		Carte [][] cartes2D = new Carte[nbrPaquetAlea+1][cartes.length];
-		cartes2D[cartes2D.length-1]=cartes;
-		cartes2D=distrubuerCartesAuDebut(cartes2D);
-		while(paquetCartesRestant(cartes2D)!=true) {
-			int nbrAleatoireIndexPaquet= UtilitaireFonction.alea(0, nbrPaquetAlea);
-			if(cartes2D[nbrAleatoireIndexPaquet]!=null) {
-				mettrePaquetAViderAuDernierIndice(cartes2D,nbrAleatoireIndexPaquet);
-				cartes2D=distrubuerCartesAuDebut(cartes2D);
-			}
+
+		//Declarer et initialiser le tab [][]
+		Carte [][] cartes2D = new Carte[nbrPaquetAlea+1][];
+		for(int i=0;i<cartes2D.length-1;i++) {
+			Carte[] arr = {};
+			cartes2D[i]=arr;
 		}
+		
+		
+		
+		
+		cartes2D[cartes2D.length-1]=cartes;// Cases 0 a P= null Case p+1= cartes
+		
+		
+		
+		cartes2D=distribuer(cartes2D,cartes2D.length-1);// premier distribution
+		// A CE POINT CHAQUE PAQUET CONTIENT DES CARTES
+		
+		
+		
+		
+		//verif(cartes2D);//method print pour voir le progres des cartes
 		return cartes2D[cartes2D.length-1];
 	}
 
-	public static boolean paquetCartesRestant(Carte[][] cartes) {
-		boolean vide = false;
-		for (int i=0; i<cartes.length-1; i++) {
-			if (cartes[i] != null) {
-				vide = false;
-				break;
-			}
-			else {
-				vide=true;
-			}
-		}
-		return vide;
-	}
-
-	public static Carte[][] distrubuerCartesAuDebut(Carte[][] cartes2D) {
+	public static Carte[][] distribuer(Carte [][]cartes2D,int indexPaquetADistribuer) {
 		int iterateurCarte=0;
-		int iterateurPaquet=0;
+		//Mettre le paquet de carte a distribue dans le dernier paquet
+		cartes2D[cartes2D.length-1]= cartes2D[indexPaquetADistribuer];
+		
+		
+		//recuperer les cartes de la derniere cases (a distribuer)
 		Carte [] cartes= cartes2D[cartes2D.length-1];		
-		while(iterateurCarte<cartes.length) {	
-			for(int i=0;i<cartes2D.length-1;i++) {
-				while(iterateurCarte<cartes.length) {
-					cartes2D[i][iterateurPaquet]=cartes[iterateurCarte];
-					iterateurCarte++;
-				}		
+
+
+		while(iterateurCarte<cartes.length) {	// tant qu'il y a des cartes dans le paquet
+			for(int i=0;i<cartes2D.length-1;i++) { // par chaque paquet
+
+				if(iterateurCarte<cartes.length&&cartes2D[i]!=null) {//pour chaque carte a distribuer
+					//verifier si le paquet n'est pas null, sinon on skip ce paquet null
+
+					Carte [] c= {cartes[iterateurCarte]}; 
+					int taille=cartes2D[i].length+c.length;
+					cartes2D[i]=fusionner(taille,cartes2D[i],c);// ajouter la carte au paquet	
+
+					iterateurCarte++;// incrementer pour pas depasser le nombre 
+					//de carte dans le dernier paquet de la case
+				}
 			}
-			iterateurPaquet++;
 		}
+		
 		return cartes2D;
 	}
 	
-	public static void mettrePaquetAViderAuDernierIndice(Carte[][] cartes2D, int index) {
-		Carte [] cartes= cartes2D[index];
-		cartes2D[cartes2D.length-1]=cartes;
-		cartes2D[index]=null;
-		
+	public Carte[][] viderPaquet(Carte [][]c, int index){
+		c[index]=null;//met la paquet donne null (a skipper lors de la distribution)
+		return c;
+	}
+	
+	
+	public static void verif(Carte [][] c){
+		// Loop through all rows
+		for (int i = 0; i < c.length-1; i++) {
+			System.out.println("Paquet : "+i);
+			for (int j = 0; j < c[i].length; j++) {
+				System.out.println(c[i][j].numero + " ");
+			}
+		}    
 	}
 }
