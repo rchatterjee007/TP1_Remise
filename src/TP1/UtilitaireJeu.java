@@ -28,7 +28,7 @@ public class UtilitaireJeu {
 		//timerPourCacherCartes(gui);
 		
 		//Melanger les cartes.
-		carteAfficher = UtilitaireTableauCartes.mélangerParPositionAleatoire(carteAfficher);
+		carteAfficher = UtilitaireTableauCartes.brasserParPaquet(carteAfficher);
 		
 		//Afficher les cartes du jeu neuf.
 		UtilitaireTableauCartes.afficherCartes(jeu, gui);
