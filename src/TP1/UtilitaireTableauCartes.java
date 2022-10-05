@@ -204,39 +204,71 @@ public class UtilitaireTableauCartes {
 		}
 		return tabCartesAfficher;
 	}
-		public static Carte[] brasserParPaquet(Carte []cartes) {
+	public static Carte[] brasserParPaquet(Carte []cartes) {
 		int nbrPaquetAlea= UtilitaireFonction.alea(6, 8);
 
-		//Declarer et initialiser le tab [][]
+		//Declarer et initialiser chaque indice avec un tab vide pour pas avoir de null dans cartes2D
 		Carte [][] cartes2D = new Carte[nbrPaquetAlea+1][];
-		for(int i=0;i<cartes2D.length-1;i++) {
+		for(int i=0;i<cartes2D.length;i++) {
 			Carte[] arr = {};
 			cartes2D[i]=arr;
+		}
+
+		cartes2D[cartes2D.length-1]=cartes;// Cases 0 a P= null Case p+1= cartes
+		cartes2D=distribuer(cartes2D);// premier distribution
+		//cartes2D[cartes2D.length-1]=null;
+		// A CE POINT CHAQUE PAQUET CONTIENT DES CARTES
+		int nbrPaquet=0;
+		
+		while(tantQuIlResteUnPauqet(cartes2D)!=true) {//Marche et teste
+			 nbrPaquet=UtilitaireFonction.alea(0,nbrPaquetAlea-1 );
+			if(cartes2D[nbrPaquet]!=null) {
+				cartes2D[cartes2D.length-1]=null;
+				cartes2D=remplacerCartesIndex(cartes2D,nbrPaquet);
+				cartes2D=distribuer(cartes2D);				
+			}
+		}
+		
+		//verif(cartes2D);//method print pour voir le progres des cartes
+		
+		return cartes2D[cartes2D.length-1];
+	}
+	
+	
+	
+	
+	public static Carte[][] remplacerCartesIndex(Carte[][] cartes,int index){
+		Carte[]  c= cartes[index];
+		cartes[cartes.length-1]= c;
+		cartes[index]=null;
+		return cartes;
+	}
+	
+	public static boolean tantQuIlResteUnPauqet(Carte[][] cartes2D) {
+		boolean empty = true;
+		for (int i=0; i<cartes2D.length-1; i++) {
+		  if (cartes2D[i] != null) {
+		    empty = false;
+		    break;
+		  }
+		  
 		}
 		
 		
 		
 		
-		cartes2D[cartes2D.length-1]=cartes;// Cases 0 a P= null Case p+1= cartes
-		
-		
-		
-		cartes2D=distribuer(cartes2D,cartes2D.length-1);// premier distribution
-		// A CE POINT CHAQUE PAQUET CONTIENT DES CARTES
 		
 		
 		
 		
-		//verif(cartes2D);//method print pour voir le progres des cartes
-		return cartes2D[cartes2D.length-1];
+		return empty;
 	}
+	
 
-	public static Carte[][] distribuer(Carte [][]cartes2D,int indexPaquetADistribuer) {
+	public static Carte[][] distribuer(Carte [][]cartes2D) {
 		int iterateurCarte=0;
-		//Mettre le paquet de carte a distribue dans le dernier paquet
-		cartes2D[cartes2D.length-1]= cartes2D[indexPaquetADistribuer];
 		
-		
+	
 		//recuperer les cartes de la derniere cases (a distribuer)
 		Carte [] cartes= cartes2D[cartes2D.length-1];		
 
@@ -256,23 +288,18 @@ public class UtilitaireTableauCartes {
 				}
 			}
 		}
-		
+
 		return cartes2D;
 	}
-	
-	public Carte[][] viderPaquet(Carte [][]c, int index){
-		c[index]=null;//met la paquet donne null (a skipper lors de la distribution)
-		return c;
-	}
-	
-	
+
 	public static void verif(Carte [][] c){
 		// Loop through all rows
-		for (int i = 0; i < c.length-1; i++) {
+		for (int i = 0; i < c.length-1&&c[i]!=null; i++) {
+			
 			System.out.println("Paquet : "+i);
 			for (int j = 0; j < c[i].length; j++) {
 				System.out.println(c[i][j].numero + " ");
 			}
 		}    
-	}
+	}	
 }
