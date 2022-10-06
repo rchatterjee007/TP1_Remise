@@ -207,8 +207,9 @@ public class UtilitaireTableauCartes {
 	 * Pour chaque fois ;
 	 * Générer un nombre de cartes à déplacer (entre 3 et 10 par exemple)
 	 * Déplacer ce nombre de cartes de la fin vers le début.
+	 * @param tableauCartes = tableau de cartes qui devra être mélangé
 	 * */
-	public static void melanger(Carte [] tab) {
+	public static void melanger(Carte [] tableauCartes) {
 		int nbrFoisMelanger= UtilitaireFonction.alea(NOMBRE_MIN, NOMBRE_MAX);
 		int i=0;
 		while (i!=nbrFoisMelanger){
