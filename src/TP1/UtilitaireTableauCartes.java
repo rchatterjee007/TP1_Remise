@@ -215,7 +215,7 @@ public class UtilitaireTableauCartes {
 		while (i!=nbrFoisMelanger){
 			int nbrCartesDeplacer=UtilitaireFonction.alea(3, 10);
 			for(int j=0;j<nbrCartesDeplacer;j++) {
-				deplacerCartes(tab);
+				deplacerCartes(tableauCartes);
 			}
 			i++;
 		}	
