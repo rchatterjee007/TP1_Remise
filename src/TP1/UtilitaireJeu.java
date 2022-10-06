@@ -30,7 +30,7 @@ public class UtilitaireJeu {
 		//timerPourCacherCartes(gui);
 		
 		//Melanger les cartes.
-		carteAfficher = UtilitaireTableauCartes.brasserParPaquet(carteAfficher);
+		carteAfficher=brasserCartesSelonChoix(carteAfficher);
 		
 		//Afficher les cartes du jeu neuf.
 		UtilitaireTableauCartes.afficherCartes(jeu, gui);
@@ -71,6 +71,58 @@ public class UtilitaireJeu {
 
 		
 	}
+	
+	/*
+	 * Demande à l'utilisateur la méthode de brassage à utiliser.
+	 * 
+	 */
+	private static Carte[] brasserCartesSelonChoix(Carte[] cartes) {
+		
+		String[] options = {"Méthode aléatoire",
+				"Méthode en paquets",
+				"Méthode carte brassée"};
+		
+		String reponse;
+		
+		do {
+			
+			reponse = (String) JOptionPane.showInputDialog(null, 
+					"Sélectionnez la méthode de brassage des cartes", 
+					"Méthode de brassage", 
+					JOptionPane.QUESTION_MESSAGE, 
+					null, 
+					options, 
+					0);
+			
+			// Si l'utilisateur n'a pas annulé
+			if(reponse != null) {
+				
+				if(reponse.equals(options[Constantes.METHODE_ALEA])){
+					
+					//UtilitaireTableauCartes.methodePaquets(cartes);
+					cartes=UtilitaireTableauCartes.mélangerParPositionAleatoire(cartes);
+				}
+				else if(reponse.equals(options[Constantes.METHODE_BRASSER])){
+					
+					cartes=UtilitaireTableauCartes.melangerParBrassage(cartes);
+					
+				}
+				
+
+				// options[Constantes.METHODE_PAQUETS]
+				// (Laisser à la fin si on ajoute des méthodes de brassage).
+				else {
+					
+					cartes=UtilitaireTableauCartes.brasserParPaquet(cartes);			
+				}						
+			}
+			
+		// On refuse l'annulation. L'utilisateur doit choisir une méthode.
+		}while(reponse == null);
+		return cartes;
+	}
+	
+	
 	/**
 	 * Gère chaque tour de la partie en ordonnant les étapes
 	 * @param cartes Un tableau de cartes.

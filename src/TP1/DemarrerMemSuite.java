@@ -76,7 +76,7 @@ public class DemarrerMemSuite {
 			etatJeu.ilYaSequence = true;
 			etatJeu.longueurSequence = 0;
 			stats.nbEssaieActuel = 0;			
-			brasserCartesSelonChoix(cartesAffichees);
+			
 			// Brasse les cartes, affiche le jeu et le cache ensuite.
 			UtilitaireJeu.initialiserJeu(jeuNeuf, cartesAffichees, gui, etatJeu);
 
@@ -140,56 +140,5 @@ public class DemarrerMemSuite {
 			etatJeu.partieTerminee =
 					UtilitaireMenu.gererMenu(jeuNeuf, cartes, gui, stats, etatJeu);
 		}
-	}
-	
-	
-	
-	/*
-	 * Demande à l'utilisateur la méthode de brassage à utiliser.
-	 * 
-	 */
-	private static void brasserCartesSelonChoix(Carte[] cartes) {
-		
-		String[] options = {"Méthode aléatoire",
-				"Méthode en paquets",
-				"Méthode carte brassée"};
-		
-		String reponse;
-		
-		do {
-			
-			reponse = (String) JOptionPane.showInputDialog(null, 
-					"Sélectionnez la méthode de brassage des cartes", 
-					"Méthode de brassage", 
-					JOptionPane.QUESTION_MESSAGE, 
-					null, 
-					options, 
-					0);
-			
-			// Si l'utilisateur n'a pas annulé
-			if(reponse != null) {
-				
-				if(reponse.equals(options[Constantes.METHODE_ALEA])){
-					
-					//UtilitaireTableauCartes.methodePaquets(cartes);
-					UtilitaireTableauCartes.mélangerParPositionAleatoire(cartes);
-				}
-				else if(reponse.equals(options[Constantes.METHODE_BRASSER])){
-					
-					UtilitaireTableauCartes.melangerParBrassage(cartes);
-					
-				}
-				
-
-				// options[Constantes.METHODE_PAQUETS]
-				// (Laisser à la fin si on ajoute des méthodes de brassage).
-				else {
-					
-					UtilitaireTableauCartes.brasserParPaquet(cartes);			
-				}						
-			}
-			
-		// On refuse l'annulation. L'utilisateur doit choisir une méthode.
-		}while(reponse == null);
 	}
 }
