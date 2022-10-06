@@ -103,7 +103,8 @@ public class UtilitaireTableauCartes {
 	private static Carte[][] transformerCarteListeEn2DPourGui
 	(Carte[] cartes, GrilleGui gui) {
 		int positionListeCarte = 0;
-		Carte[][] listeCartes2D = new Carte[gui.getNbLignes()][gui.getNbColonnes()];
+		Carte[][] listeCartes2D = new Carte
+				[gui.getNbLignes()][gui.getNbColonnes()];
 		for(int y=0; y< gui.getNbLignes(); y++) {
 			for(int i=0; i< gui.getNbColonnes(); i++) {
 				Carte carte = cartes[positionListeCarte];
@@ -155,7 +156,7 @@ public class UtilitaireTableauCartes {
 	 * */
 	public static Carte[] melangerParBrassage(Carte[] cartes){	
 
-		//Générer un nombre aléatoire de fois que vous répéterez les trois étapes.
+		//Générer un nombre aléatoire de fois que vous répéterez les étapes.
 		int nbrAleatoire=UtilitaireFonction.alea(NOMBRE_MIN, NOMBRE_MAX);
 
 
@@ -317,10 +318,12 @@ public class UtilitaireTableauCartes {
 	 * @param tabDePaquetsCartes = tableau de paquets de cartes
 	 * @return le tableau de Cartes contenant les 52 cartes
 	 * */
-	public static Carte[] retournerCartesMelange(Carte[][] tabDePaquetsCartes) {
+	public static Carte[] retournerCartesMelange
+	(Carte[][] tabDePaquetsCartes) {
 		Carte [] tabCartesJeu= new Carte [Constantes.NB_CARTES];
 		for (int i=0; i<tabDePaquetsCartes.length-1; i++) {
-			if (tabDePaquetsCartes[i] != null&&tabDePaquetsCartes[i].length==52) {
+			if (tabDePaquetsCartes[i] != null&&
+					tabDePaquetsCartes[i].length==52) {
 				tabCartesJeu=tabDePaquetsCartes[i];
 				tabDePaquetsCartes[tabDePaquetsCartes.length-1]=tabCartesJeu;
 				break;

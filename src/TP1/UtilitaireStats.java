@@ -36,10 +36,14 @@ public class UtilitaireStats {
 		
 		String message = 
 				
-				"Nombre d'essai(s) actuel: " + stats.nbEssaieActuel+" carte(s)"+"\n"+
-				"La plus grande séquance: " + stats.grandeSequence+" carte(s)"+"\n"+
-				"Nombre de réussites:" + stats.nbReussites+" partie(s) consécutives"+"\n"+
-				"Nombre d'essai(s) en moyenne par parties: "+ moyenneEssaisParParties;
+				"Nombre d'essai(s) actuel: " + stats.nbEssaieActuel+
+				" carte(s)"+"\n"+
+				"La plus grande séquance: " + stats.grandeSequence+
+				" carte(s)"+"\n"+
+				"Nombre de réussites:" + stats.nbReussites+
+				" partie(s) consécutives"+"\n"+
+				"Nombre d'essai(s) en moyenne par parties: "+
+				moyenneEssaisParParties;
 		return message;
 		
 	}

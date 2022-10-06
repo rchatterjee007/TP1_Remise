@@ -5,7 +5,8 @@ public class UtilitaireSysteme {
 
 	/*
 	 * Retourne un tableau de r�f�rences de Carte.  Les cartes ont une image 
-	 * qui doit �tre prise dans le r�pertoire images/, qui doit �tre au m�me niveau 
+	 * qui doit �tre prise dans le r�pertoire images/, qui doit 
+	 * �tre au m�me niveau 
 	 * que le r�pertoire src/ et les fichiers .gif doivent s'y trouver.
 	 *
 	 * Le tout a �t� mont� sous Windows.  Il n'y a pas eu de test sur les autres 
