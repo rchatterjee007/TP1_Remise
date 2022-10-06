@@ -7,9 +7,27 @@ import TP1.Constantes.Sorte;
  * @author Radhika Chatterjee 
  * @author Simon Pitre-Lamas
  * 
- * Les m�thodes publiques :
- * 
- * 							
+ * Les m�thodes publiques : 
+ * 							-mélangerParPositionAleatoire()
+ * 							-copieDuJeu()
+ * 							-toutesLesCartesSontTournee()
+ *							-deuxCartesSeSuivent()
+ *							-modifierVisibiliteCarte()
+ *							-afficherCartes()
+ *							-rendreCartesNonVisible()
+ *							-rendreCartesVisble()
+ *							-transformerCarteListeEn2DPourGui()		
+ *							-sousTableauDeCartes()
+ *							-melangerParBrassage()
+ *							-deplacerCartes()
+ *							-melanger()
+ *							-fusionner()
+ *							-brasserParPaquet()
+ *							-retournerCartesMelange()
+ *							-siLePaquetEstComplet()
+ *							-remplacerCartesIndex()
+ *							-PaquetsSontTousVides()
+ *							-distribuerLesCartesEnPaquets()
  */
 public class UtilitaireTableauCartes {
 	// CONSTANTS qui determine le nombre de fois que les cartes seront brasses.
