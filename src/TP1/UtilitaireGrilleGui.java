@@ -35,4 +35,9 @@ public class UtilitaireGrilleGui {
 			}
 		}
 	}
+
+	public static void montrerUneCarte(Carte[][] cartes, Coordonnee xy, GrilleGui gui) {
+		
+	}
+	
 }

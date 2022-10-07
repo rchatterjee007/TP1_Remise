@@ -133,6 +133,17 @@ public class UtilitaireJeu {
 	public static void effectuerUnTour(Carte[] cartes, GrilleGui gui,
 			Stats stats, EtatJeu etatJeu) {
 		
+		
+		
+	}
+	
+	public static void gererSequence(Carte carte, Coordonnee xy,Stats stats, EtatJeu etaJ) {
+		
+		
+	}
+	
+	public static void validerClic(Carte[][] cartes, Coordonnee xy,Stats stats, EtatJeu etaJ) {
+		
 	}
 	/**
 	 * Procédure qui reçoit appel le module UtilitaireTableauCartes 

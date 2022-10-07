@@ -455,6 +455,8 @@ public class UtilitaireTableauCartes {
 		}
 
 		return tabDePaquetsCartes;
+	
 	}
+	
 
 }
