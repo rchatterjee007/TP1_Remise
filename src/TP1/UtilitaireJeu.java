@@ -133,21 +133,43 @@ public class UtilitaireJeu {
 	public static void effectuerUnTour(Carte[] cartes, GrilleGui gui,
 			Stats stats, EtatJeu etatJeu) {
 		
+		Carte[][] cartesDujeu=UtilitaireTableauCartes.transformerCarteListeEn2DPourGui(cartes,gui);
 		
+		
+	}
+	
+	
+	public static void gererSequence(Carte[][] cartes,Coordonnee ancienneCarte,Coordonnee prochaineCarte,Stats stats, EtatJeu etaJ) {
+		Carte carteAncienne= cartes[ancienneCarte.colonne][ancienneCarte.ligne];
+		Carte carteProchaine= cartes[prochaineCarte.colonne][prochaineCarte.ligne];
+		
+		if(etaJ.longueurSequence==0) {
+			etaJ.longueurSequence++;
+			
+		}else {
+			if(UtilitaireTableauCartes.deuxCartesSeSuivent(carteAncienne, carteProchaine)==true) {
+				etaJ.ilYaSequence=true;
+				etaJ.longueurSequence++;
+			}
+			else {
+				etaJ.ilYaSequence=false;
+				cartes[prochaineCarte.colonne][prochaineCarte.ligne].visible=false;
+			}
+		}
+		
+		if(etaJ.longueurSequence>stats.grandeSequence) {
+			stats.grandeSequence=etaJ.longueurSequence;
+		}
 		
 	}
 	
 	/**
-	 * Vous devez aviser qu’un coup est perdu si l’utilisateur a cliqué sur une carte déjà visible.  Autrement, vous retenez la carte dans le tableau de séquences (dans l’état du jeu) selon la longueur de la séquence actuelle (Il ne faut pas incrémenter le champ longueurSequence). Il faudra aussi mettre la carte visible.  
+	 * Vous devez aviser qu’un coup est perdu si l’utilisateur a cliqué sur une carte déjà visible.
+	 * Autrement, vous retenez la carte dans le tableau de séquences (dans l’état du jeu) selon la longueur de la séquence actuelle (Il ne faut pas incrémenter le champ longueurSequence). Il faudra aussi mettre la carte visible.  
 	 * Finalement, incrémenter le nombre d’essais (dans tous les cas).
 	 * La longueur de séquence n’est pas incrémentée parce que nous devons valider si la carte fait partie de la séquence avant (cela sera réalisé dans un autre sous programme (voir 2.2)).
 
 	 * */
-	public static void gererSequence(Carte carte, Coordonnee xy,Stats stats, EtatJeu etaJ) {
-		
-		
-	}
-	
 	public static void validerClic(Carte[][] cartes, Coordonnee xy,Stats stats, EtatJeu etaJ) {
 		Carte carte=cartes[xy.colonne][xy.ligne];
 		if(carte.visible==false) {

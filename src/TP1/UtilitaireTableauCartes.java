@@ -118,7 +118,7 @@ public class UtilitaireTableauCartes {
 		return cartes;
 	}
 
-	private static Carte[][] transformerCarteListeEn2DPourGui
+	public static Carte[][] transformerCarteListeEn2DPourGui
 	(Carte[] cartes, GrilleGui gui) {
 		int positionListeCarte = 0;
 		Carte[][] listeCartes2D = new Carte
