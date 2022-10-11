@@ -138,22 +138,23 @@ public class UtilitaireJeu {
 		
 	}
 	
-	
-	public static void gererSequence(Carte[][] cartes,Coordonnee ancienneCarte,Coordonnee prochaineCarte,Stats stats, EtatJeu etaJ) {
+	//ON SUPPOSE QU'IL Y A EU UN CLIC 
+	public static void gererSequence(Carte[][] cartes,Coordonnee ancienneCarte,Stats stats, EtatJeu etaJ, GrilleGui gui) {
 		Carte carteAncienne= cartes[ancienneCarte.colonne][ancienneCarte.ligne];
-		Carte carteProchaine= cartes[prochaineCarte.colonne][prochaineCarte.ligne];
+		
+		Carte carteClique=cartes[gui.getPosition().colonne][gui.getPosition().ligne];
 		
 		if(etaJ.longueurSequence==0) {
 			etaJ.longueurSequence++;
 			
 		}else {
-			if(UtilitaireTableauCartes.deuxCartesSeSuivent(carteAncienne, carteProchaine)==true) {
+			if(UtilitaireTableauCartes.deuxCartesSeSuivent(carteAncienne, carteClique)==true) {
 				etaJ.ilYaSequence=true;
 				etaJ.longueurSequence++;
 			}
 			else {
 				etaJ.ilYaSequence=false;
-				cartes[prochaineCarte.colonne][prochaineCarte.ligne].visible=false;
+				cartes[gui.getPosition().colonne][gui.getPosition().ligne].visible=false;
 			}
 		}
 		
