@@ -67,9 +67,6 @@ public class UtilitaireJeu {
 		
 		//Afficher les carte temporaire.
 		UtilitaireTableauCartes.afficherCartes(cartesTemporaire, gui);
-		
-
-		
 	}
 	
 	/*
@@ -120,17 +117,26 @@ public class UtilitaireJeu {
 	 * @param stats Les statistiques de la partie.
 	 * @param etatJeu L'état du jeu.
 	 */
-	public static void effectuerUnTour(Carte[] cartes, GrilleGui gui,
+	public static void effectuerUnTour(Carte[] jeu, GrilleGui gui,
 			Stats stats, EtatJeu etatJeu) {
+		
+		stats.nbEssaieActuel++;
+	
+		if(UtulisateurAClic(gui)==true) {
+			
+			Coordonnee coordonneeClic=getDernierClicPosition(gui);
+			validerClic(coordonneeClic,stats,etatJeu,gui);
+			UtilitaireGrilleGui.afficherCartes(UtilitaireGrilleGui.listeCarteJeu, gui);
+		}
 	}
 	
 	
 	public static void gererSequence(Carte[][] cartes,Coordonnee dernierCarteDeLaSequence,Stats stats, EtatJeu etaJ, GrilleGui gui) {
 		if(etaJ.longueurSequence==0) {
-			
+			etaJ.longueurSequence++;
 		}
 		else {
-			Coordonnee c= getDernierClicPosition(gui,etaJ);
+			Coordonnee c= getDernierClicPosition(gui);
 			Carte carte=cartes[c.colonne][c.ligne];
 			
 			if(UtilitaireTableauCartes.deuxCartesSeSuivent(carte, cartes[dernierCarteDeLaSequence.colonne][dernierCarteDeLaSequence.ligne])) {
@@ -151,21 +157,44 @@ public class UtilitaireJeu {
 	}
 	
 
-	public static void validerClic(Carte[][] cartes,Stats stats, EtatJeu etaJ, GrilleGui gui) {
-		if(getDernierClicPosition(gui,etaJ)!=null) {
-			Coordonnee c= getDernierClicPosition(gui,etaJ);
-			if(cartes[c.colonne][c.ligne].visible==true) {
-				stats.nbEssaieActuel++;
-				afficherMessage("VOUS AVEZ PERDU! LE COUP");
-			}
-			else {
-				etaJ.tabSequence[etaJ.longueurSequence]=convertirPositionEn1D(gui,c);
-				cartes[c.colonne][c.ligne].visible=true;
-				stats.nbEssaieActuel++;
+	public static void validerClic(Coordonnee c,Stats stats, EtatJeu etaJ, GrilleGui gui) {
+		
+		//CARTE ANCIENNE
+		if(UtilitaireGrilleGui.listeCarteJeu[c.ligne][c.colonne].visible==true) {
+			afficherMessage("VOUS AVEZ PERDU! LE COUP");
+		}else {
+			etaJ.tabSequence[etaJ.longueurSequence]=convertirPositionEn1D(gui,c);
+			UtilitaireGrilleGui.listeCarteJeu[c.ligne][c.colonne].visible=true;
+			
+		}
+		stats.nbEssaieActuel++;
+	}
+	
+	public static Carte trouverCartesDuJeuAvecPosition(GrilleGui gui,int position) {
+		Carte carte= new Carte();
+		
+		
+		Carte[][] cartesGrille= UtilitaireGrilleGui.listeCarteJeu;//reproduire la grille
+		for(int i=0;i<cartesGrille.length;i++) {
+			for(int j=0;j<cartesGrille[i].length;j++) {
+				Coordonnee xy= initialiserCoordonnee(i,j);
+				int positionCarte=convertirPositionEn1D(gui,xy);
+				if(positionCarte==position) {
+					carte=cartesGrille[i][j];
+				}
 			}
 		}
-		
+		return carte;
 	}
+	
+	
+	public static Coordonnee initialiserCoordonnee(int x, int y) {
+		Coordonnee xy= new Coordonnee();
+		xy.colonne=x;
+		xy.ligne=y;
+		return xy;
+	}
+	
 	/**
 	 * Procédure qui reçoit appel le module UtilitaireTableauCartes 
 	 * pour afficher les carte.
@@ -208,8 +237,17 @@ public class UtilitaireJeu {
 		return position;
 	}
 	
-	public static Coordonnee getDernierClicPosition(GrilleGui gui,EtatJeu etatJeu) {
+	public static Coordonnee getDernierClicPosition(GrilleGui gui) {
 		return gui.getPosition();
+	}
+	
+	public static boolean UtulisateurAClic(GrilleGui gui) {
+		boolean BEENCLICKED= true;
+		
+		if(gui.getPosition()==null) {
+			BEENCLICKED=false;
+		}
+		return BEENCLICKED;
 	}
 	
 	
