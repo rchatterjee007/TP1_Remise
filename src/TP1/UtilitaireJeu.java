@@ -80,12 +80,9 @@ public class UtilitaireJeu {
 		
 		String[] options = {"Méthode aléatoire",
 				"Méthode en paquets",
-				"Méthode carte brassée"};
-		
+				"Méthode carte brassée"};	
 		String reponse;
-		
 		do {
-			
 			reponse = (String) JOptionPane.showInputDialog(null, 
 					"Sélectionnez la méthode de brassage des cartes", 
 					"Méthode de brassage", 
@@ -95,24 +92,17 @@ public class UtilitaireJeu {
 					0);
 			
 			// Si l'utilisateur n'a pas annulé
-			if(reponse != null) {
-				
+			if(reponse != null) {	
 				if(reponse.equals(options[Constantes.METHODE_ALEA])){
-					
 					//UtilitaireTableauCartes.methodePaquets(cartes);
 					cartes=UtilitaireTableauCartes.mélangerParPositionAleatoire(cartes);
 				}
 				else if(reponse.equals(options[Constantes.METHODE_BRASSER])){
-					
 					cartes=UtilitaireTableauCartes.melangerParBrassage(cartes);
-					
 				}
-				
-
 				// options[Constantes.METHODE_PAQUETS]
 				// (Laisser à la fin si on ajoute des méthodes de brassage).
-				else {
-					
+				else {	
 					cartes=UtilitaireTableauCartes.brasserParPaquet(cartes);			
 				}						
 			}
@@ -132,53 +122,47 @@ public class UtilitaireJeu {
 	 */
 	public static void effectuerUnTour(Carte[] cartes, GrilleGui gui,
 			Stats stats, EtatJeu etatJeu) {
-		
-		Carte[][] cartesDujeu=UtilitaireTableauCartes.transformerCarteListeEn2DPourGui(cartes,gui);
-		
-		
 	}
 	
-	//ON SUPPOSE QU'IL Y A EU UN CLIC 
-	public static void gererSequence(Carte[][] cartes,Coordonnee ancienneCarte,Stats stats, EtatJeu etaJ, GrilleGui gui) {
-		Carte carteAncienne= cartes[ancienneCarte.colonne][ancienneCarte.ligne];
-		
-		Carte carteClique=cartes[gui.getPosition().colonne][gui.getPosition().ligne];
-		
+	
+	public static void gererSequence(Carte[][] cartes,Coordonnee dernierCarteDeLaSequence,Stats stats, EtatJeu etaJ, GrilleGui gui) {
 		if(etaJ.longueurSequence==0) {
-			etaJ.longueurSequence++;
 			
-		}else {
-			if(UtilitaireTableauCartes.deuxCartesSeSuivent(carteAncienne, carteClique)==true) {
+		}
+		else {
+			Coordonnee c= getDernierClicPosition(gui,etaJ);
+			Carte carte=cartes[c.colonne][c.ligne];
+			
+			if(UtilitaireTableauCartes.deuxCartesSeSuivent(carte, cartes[dernierCarteDeLaSequence.colonne][dernierCarteDeLaSequence.ligne])) {
 				etaJ.ilYaSequence=true;
 				etaJ.longueurSequence++;
 			}
 			else {
-				etaJ.ilYaSequence=false;
-				cartes[gui.getPosition().colonne][gui.getPosition().ligne].visible=false;
+				afficherMessage("LA SÉQUENCE EST BRISSÉ");
+				if(etaJ.longueurSequence==1) {
+					cartes[c.colonne][c.ligne].visible=false;
+					etaJ.longueurSequence=0;
+				}
 			}
-		}
-		
+		}		
 		if(etaJ.longueurSequence>stats.grandeSequence) {
 			stats.grandeSequence=etaJ.longueurSequence;
 		}
-		
 	}
 	
-	/**
-	 * Vous devez aviser qu’un coup est perdu si l’utilisateur a cliqué sur une carte déjà visible.
-	 * Autrement, vous retenez la carte dans le tableau de séquences (dans l’état du jeu) selon la longueur de la séquence actuelle (Il ne faut pas incrémenter le champ longueurSequence). Il faudra aussi mettre la carte visible.  
-	 * Finalement, incrémenter le nombre d’essais (dans tous les cas).
-	 * La longueur de séquence n’est pas incrémentée parce que nous devons valider si la carte fait partie de la séquence avant (cela sera réalisé dans un autre sous programme (voir 2.2)).
 
-	 * */
-	public static void validerClic(Carte[][] cartes, Coordonnee xy,Stats stats, EtatJeu etaJ) {
-		Carte carte=cartes[xy.colonne][xy.ligne];
-		if(carte.visible==false) {
-			UtilitaireTableauCartes.modifierVisibiliteCarte(carte);
-		}
-		else {
-			stats.nbEssaieActuel++;
-			etaJ.partieTerminee=true;
+	public static void validerClic(Carte[][] cartes,Stats stats, EtatJeu etaJ, GrilleGui gui) {
+		if(getDernierClicPosition(gui,etaJ)!=null) {
+			Coordonnee c= getDernierClicPosition(gui,etaJ);
+			if(cartes[c.colonne][c.ligne].visible==true) {
+				stats.nbEssaieActuel++;
+				afficherMessage("VOUS AVEZ PERDU! LE COUP");
+			}
+			else {
+				etaJ.tabSequence[etaJ.longueurSequence]=convertirPositionEn1D(gui,c);
+				cartes[c.colonne][c.ligne].visible=true;
+				stats.nbEssaieActuel++;
+			}
 		}
 		
 	}
@@ -193,6 +177,10 @@ public class UtilitaireJeu {
 			GrilleGui gui, EtatJeu etatJeu) {
 		UtilitaireTableauCartes.afficherCartes(cartes, gui);
 	}
+	
+	
+	
+	
 	public static void montrerIndices(Carte[] cartes, 
 			GrilleGui gui, EtatJeu etatJeu) {
 		String message = "Votre nombre d'indice est  : "+etatJeu.nbIndices;	
@@ -205,31 +193,25 @@ public class UtilitaireJeu {
 	 * @param message Message à afficher.
 	 */
 	public static void afficherMessage(String message) {
-		
 		JOptionPane.showMessageDialog(null, 
 				message);
+	}
 		
+	/**
+	 * Convertir la position de 2D à 1D (ligne * nombre de colonnes + colonne) .
+	 * */
+	public static int convertirPositionEn1D(GrilleGui gui,Coordonnee coordonnee ) {
+		int position=0;
+		if(coordonnee!=null) {
+			position=(coordonnee.ligne*gui.getNbColonnes())+coordonnee.colonne;
+		}
+		return position;
 	}
-	/*
-	private static void timerPourAfficherCartes(Carte[] cartes,
-	 GrilleGui gui) {
-		Timer timer = new Timer(Constantes.TEMPS_VISIONNEMENT, 
-		new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				UtilitaireTableauCartes.afficherCartes(cartes, gui);
-				
-			}
-		});
-		timer.setRepeats(false);
-		timer.start();
-	}
-	*/
 	
-	public static Coordonnee getPositionClicUtilisateur(GrilleGui gui) {
+	public static Coordonnee getDernierClicPosition(GrilleGui gui,EtatJeu etatJeu) {
 		return gui.getPosition();
-		
 	}
+	
+	
 	
 }
