@@ -457,6 +457,21 @@ public class UtilitaireTableauCartes {
 		return tabDePaquetsCartes;
 	
 	}
-	
 
+	public static boolean lesCartesSeSuivent(Carte c1, Carte c2) {
+		boolean seSuivent=false;
+		
+		//SI LE NOMBRE DE LA CARTE EST ENTRE 2 ET 12 de MEME SORTE CAS NORMAL 
+		if(c1.numero>=2 && c1.numero<Constantes.CARTES_PAR_SORTES-1&&c1.couleur.equals(c2.couleur)) {
+			if(c1.numero+1==c2.numero) {
+				seSuivent=true;
+			}
+		}
+		//CAS SI LA CARTE EST LA DERNIER DE LA SORTE... 13
+		//LA SUITE SERA UNE CARTE AVEC NUMERO 2 DE DIFFÉRENT SORTE
+		if(c1.numero==Constantes.CARTES_PAR_SORTES&&c2.numero==2) {
+			seSuivent=true;
+		}
+		return seSuivent;
+	}
 }
