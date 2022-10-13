@@ -499,14 +499,14 @@ public class UtilitaireTableauCartes {
 
 		//SI LE NOMBRE DE LA CARTE EST ENTRE 2 ET 12 de MEME SORTE 
 		if(carte1.numero>=1 && carte1.numero<=Constantes.CARTES_PAR_SORTES-1&&
-				carte1.couleur.equals(carte1.couleur)) {
-			if(carte1.numero+1==carte1.numero) {
+				carte1.couleur.equals(carte2.couleur)) {
+			if(carte1.numero+1==carte2.numero) {
 				seSuivent=true;
 			}
 		}
 		//CAS SI LA CARTE EST LA DERNIER DE LA SORTE... 13
 		//LA SUITE SERA UNE CARTE AVEC NUMERO 2 DE DIFFÉRENT SORTE
-		if(carte1.numero==Constantes.CARTES_PAR_SORTES&&carte1.numero==1) {
+		if(carte1.numero==Constantes.CARTES_PAR_SORTES&&carte2.numero==1) {
 			seSuivent=true;
 		}
 
