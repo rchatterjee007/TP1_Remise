@@ -28,6 +28,7 @@ import TP1.Constantes.Sorte;
  *							-remplacerCartesIndex()
  *							-PaquetsSontTousVides()
  *							-distribuerLesCartesEnPaquets()
+ *							-lesCartesSeSuivent
  */
 public class UtilitaireTableauCartes {
 	// CONSTANTS qui determine le nombre de fois que les cartes seront brasses.
@@ -37,6 +38,11 @@ public class UtilitaireTableauCartes {
 
 	public UtilitaireTableauCartes() {}
 
+	/**
+	 * Mélange les cartes en position aléatoires
+	 * @param cartes: tableau des cartes du jeux (52)
+	 * @return liste de cartes mélangés
+	 * */
 	public static Carte[] mélangerParPositionAleatoire(Carte[] cartes) {
 		Carte[] cartesTemporaire = new Carte[Constantes.NB_CARTES];
 		int chiffreAleatoire;
@@ -53,6 +59,11 @@ public class UtilitaireTableauCartes {
 		return cartesTemporaire;
 	}
 
+	/**
+	 * Méthode qui fait une copie des cartes du jeu
+	 * @param tableau contenant les cartes du jeu
+	 * @return le tableau avec les cartes du jeux
+	 * */
 	public static Carte[] copieDuJeu(Carte[] jeuneuf) {
 		Carte[] cartesCopie = new Carte[jeuneuf.length];
 		for(int i = 0; i<jeuneuf.length; i++) {
@@ -61,7 +72,11 @@ public class UtilitaireTableauCartes {
 		return cartesCopie;
 	}
 
-
+	/**
+	 * Méthode qui vérifie si tous les cartes sont tournée
+	 * @param cartes: tableau de jeux de cartes
+	 * @return vrai si tous les cartes du tableau sont tournés
+	 * */
 	public static Boolean toutesLesCartesSontTournee(Carte[] cartes) {
 		Boolean toutesLesCartesSontTournee = true;
 		int indexCarte = 0;
@@ -76,20 +91,11 @@ public class UtilitaireTableauCartes {
 		return toutesLesCartesSontTournee;
 	}
 
-	public static Boolean deuxCartesSeSuivent(Carte carte1, Carte carte2) {
-		Boolean carteSeSuivent = true;
-		int numeroCarte1 = carte1.numero;
-		int numeroCarte2 = carte2.numero;
-		Sorte sorteCarte1 = carte1.couleur;
-		Sorte sorteCarte2 = carte2.couleur;
-
-		if(numeroCarte1 == numeroCarte2++ && sorteCarte1 == sorteCarte2) {
-			return carteSeSuivent;
-		}else {
-			return false;
-		}
-	}
-
+	/**
+	 * Méthode qui change la visibilité d'une carte 
+	 * @param carte : la carte dont on doit modifier la visibilité
+	 * @return la carte  après avoir modifier la visibilité
+	 * */
 	public static Carte modifierVisibiliteCarte(Carte carte) {
 		if(carte.visible == false) {
 			carte.visible = true;
@@ -99,11 +105,22 @@ public class UtilitaireTableauCartes {
 		return carte;
 	}
 
+
+	/**
+	 * Affiche les cartes sur la gui 
+	 * @param cartes:tableau de cartes du jeux 
+	 * @param gui: gui principale
+	 * */
 	public static void afficherCartes(Carte[] cartes, GrilleGui gui) {
 		Carte[][] listeCarte2D = transformerCarteListeEn2DPourGui(cartes, gui);
 		UtilitaireGrilleGui.afficherCartes(listeCarte2D, gui);
 	}
 
+	/**
+	 * Méthode qui cache tous le sartes du tableau
+	 * @param cartes:tableau de cartes du jeux 
+	 * @return le tableau avec les cartes invisible
+	 * */
 	public static Carte[] rendreCartesNonVisible(Carte[] cartes) {
 		for(int i=0; i<cartes.length; i++) {
 			cartes[i].visible = false;
@@ -111,6 +128,12 @@ public class UtilitaireTableauCartes {
 		return cartes;
 	}
 
+
+	/**
+	 * Méthode qui montre tous les cartes du tableau
+	 * @param cartes:tableau de cartes du jeux 
+	 * @return le tableau de cartes avec kes cartes visible
+	 * */
 	public static Carte[] rendreCartesVisble(Carte[] cartes) {
 		for(int i=0; i<cartes.length; i++) {
 			cartes[i].visible = true;
@@ -118,6 +141,12 @@ public class UtilitaireTableauCartes {
 		return cartes;
 	}
 
+	/**
+	 * Tranforme les cartes en 2D pour faciliter la création du gui
+	 * @param cartes:tableau de cartes du jeux 
+	 * @param gui: gui principale
+	 * @return un tableau 2D avec les cartes du jeux comme la gui
+	 * */
 	public static Carte[][] transformerCarteListeEn2DPourGui
 	(Carte[] cartes, GrilleGui gui) {
 		int positionListeCarte = 0;
@@ -455,24 +484,32 @@ public class UtilitaireTableauCartes {
 		}
 
 		return tabDePaquetsCartes;
-	
+
 	}
 
-	public static boolean lesCartesSeSuivent(Carte c1, Carte c2) {
+	/**
+	 * Méthode qui vérifie si la deuxième carte est la suite de la première
+	 * @param carte1:
+	 * @param carte2 
+	 * @return vrai la carte est une suite de l'ancienne
+	 * @return faux si a carte n'est pas la suite de l'autre
+	 * */
+	public static boolean lesCartesSeSuivent(Carte carte1, Carte carte2) {
 		boolean seSuivent=false;
-		
-		//SI LE NOMBRE DE LA CARTE EST ENTRE 2 ET 12 de MEME SORTE CAS NORMAL 
-		if(c1.numero>=1 && c1.numero<=Constantes.CARTES_PAR_SORTES-1&&c1.couleur.equals(c2.couleur)) {
-			if(c1.numero+1==c2.numero) {
+
+		//SI LE NOMBRE DE LA CARTE EST ENTRE 2 ET 12 de MEME SORTE 
+		if(carte1.numero>=1 && carte1.numero<=Constantes.CARTES_PAR_SORTES-1&&
+				carte1.couleur.equals(carte1.couleur)) {
+			if(carte1.numero+1==carte1.numero) {
 				seSuivent=true;
 			}
 		}
 		//CAS SI LA CARTE EST LA DERNIER DE LA SORTE... 13
 		//LA SUITE SERA UNE CARTE AVEC NUMERO 2 DE DIFFÉRENT SORTE
-		if(c1.numero==Constantes.CARTES_PAR_SORTES&&c2.numero==1) {
+		if(carte1.numero==Constantes.CARTES_PAR_SORTES&&carte1.numero==1) {
 			seSuivent=true;
 		}
-			
+
 		return seSuivent;
 	}
 }

@@ -7,6 +7,7 @@ package TP1;
  */
 public class UtilitaireGrilleGui {
 
+	//Tableau qui contient les cartes du jeu actuel
 	static Carte[][] listeCarteJeu;
 	public UtilitaireGrilleGui() {
 		// TODO Auto-generated constructor stub
