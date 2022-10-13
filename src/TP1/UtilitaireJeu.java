@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
  */
 public class UtilitaireJeu {
 	
-	static Carte[] ancienneCarte;
+	static Carte[] ancienCarte;
 	
 	
 
@@ -72,7 +72,7 @@ public class UtilitaireJeu {
 		//Afficher les carte temporaire.
 		UtilitaireTableauCartes.afficherCartes(cartesTemporaire, gui);
 		etatjeu.tabSequence= new int[Constantes.NB_CARTES];
-		ancienneCarte= new Carte[Constantes.NB_CARTES];
+		ancienCarte= new Carte[Constantes.NB_CARTES];
 	}
 
 	/*
@@ -146,16 +146,14 @@ public class UtilitaireJeu {
 			etaJ.longueurSequence++;
 		}
 		else {
-			Carte ancienne=ancienneCarte[etaJ.longueurSequence-1];
+			Carte ancienne=ancienCarte[etaJ.longueurSequence-1];
 			Carte presentementClic= UtilitaireGrilleGui.listeCarteJeu[xy.ligne][xy.colonne];
-			System.out.println(ancienne.numero);
-			//System.out.println(presentementClic.numero);
 			if(ancienne!=null && presentementClic!=null) {
 				if(UtilitaireTableauCartes.lesCartesSeSuivent(ancienne,presentementClic)==true) {
 					etaJ.ilYaSequence=true;
 					etaJ.longueurSequence++;
 				}else {
-					UtilitaireGrilleGui.listeCarteJeu[xy.ligne][xy.colonne].visible=false;
+					mettreUneCarteInvisible(UtilitaireGrilleGui.listeCarteJeu[xy.ligne][xy.colonne]);//.visible=false;
 					etaJ.ilYaSequence=false;
 					afficherMessage("LA SÉQUENCE EST BRISSÉ");
 
@@ -177,8 +175,8 @@ public class UtilitaireJeu {
 			afficherMessage("VOUS AVEZ PERDU! LE COUP");
 		}else {
 			etaJ.tabSequence[etaJ.longueurSequence]=convertirPositionEn2D(gui,c);
-			ancienneCarte[etaJ.longueurSequence]=UtilitaireGrilleGui.listeCarteJeu[c.ligne][c.colonne];
-			UtilitaireGrilleGui.listeCarteJeu[c.ligne][c.colonne].visible=true;
+			ancienCarte[etaJ.longueurSequence]=UtilitaireGrilleGui.listeCarteJeu[c.ligne][c.colonne];
+			mettreUneCarteVisible(UtilitaireGrilleGui.listeCarteJeu[c.ligne][c.colonne]);//.visible=true;
 		}
 		stats.nbEssaieActuel++;
 	}
@@ -221,46 +219,42 @@ public class UtilitaireJeu {
 	}
 
 	public static Carte trouverCarteSuivantSequence(GrilleGui gui, EtatJeu etaJ) {
-		Carte carte= ancienneCarte[etaJ.longueurSequence];
-		Carte carte2= new Carte();
-		Carte[][] cartesDuJeu= UtilitaireGrilleGui.listeCarteJeu;
-		for(int i=0;i<cartesDuJeu.length;i++) {
-			for(int j=0;j<cartesDuJeu[i].length;j++) {
-				if(carte.numero>=1&&carte.numero<Constantes.CARTES_PAR_SORTES) {
-					if((carte.numero+1)==cartesDuJeu[i][j].numero&&
-							carte.couleur.equals(cartesDuJeu[i][j].couleur)) {
-						carte2=cartesDuJeu[i][j];	
-					}
+		Carte carteSuivante=new Carte();
+		Carte carteCourante=ancienCarte[etaJ.longueurSequence];
+		for(int i=0;i<UtilitaireGrilleGui.listeCarteJeu.length;i++) {
+			for(int j=0;j<UtilitaireGrilleGui.listeCarteJeu[i].length;j++) {
+				if(carteCourante.numero>=1&&carteCourante.numero<Constantes.CARTES_PAR_SORTES&&
+						carteCourante.couleur.equals(UtilitaireGrilleGui.listeCarteJeu[i][j].couleur)&&
+						UtilitaireGrilleGui.listeCarteJeu[i][j].numero+1==carteCourante.numero) {
+						carteSuivante=UtilitaireGrilleGui.listeCarteJeu[i][j];
 				}
-				if(carte.numero==Constantes.CARTES_PAR_SORTES) {
-					carte2=trouverCartePlusPetite();
+				if(carteCourante.numero==Constantes.CARTES_PAR_SORTES) {
+					carteSuivante=trouverCartePlusPetite();
 				}
 			}
 		}
-
-		return carte2;
+		return carteSuivante;
 	}
 
 	public static void montrerIndices(Carte[] cartes, 
 			GrilleGui gui, EtatJeu etatJeu) {
-
 		Carte carte= new Carte();
-		Carte ancienne= ancienneCarte[etatJeu.longueurSequence];
 		if(etatJeu.nbIndices==0) {
-			String message = ("VOUS AVEZ PLUS D'INDICES!");	
-			afficherMessage(message);
+			afficherMessage("VOUS N'AVEZ AUCUN INDICES RESTANT");
 		}
 		else {
-			etatJeu.nbIndices--;
 			if(etatJeu.ilYaSequence==false) {
-				carte=trouverCartePlusPetite();
-				montrerUneCarte(gui,etatJeu);
-			}
-			else {
 				carte=trouverCarteSuivantSequence(gui,etatJeu);
-				montrerUneCarte(gui,etatJeu);
+				montrerUneCarte(carte,gui,etatJeu);
+				etatJeu.nbIndices--;
+			}
+			if(etatJeu.ilYaSequence==true) {
+				carte=trouverCarteSuivantSequence(gui,etatJeu);
+				montrerUneCarte(carte,gui,etatJeu);
+				etatJeu.nbIndices--;
 			}
 		}
+		
 	}
 
 	public static void mettreUneCarteVisible(Carte c) {	
@@ -272,7 +266,7 @@ public class UtilitaireJeu {
 			}
 		}
 	}
-	public static void mettreUneCarteInisible(Carte c) {	
+	public static void mettreUneCarteInvisible(Carte c) {	
 		for(int i=0;i<UtilitaireGrilleGui.listeCarteJeu.length;i++) {
 			for(int j=0;j<UtilitaireGrilleGui.listeCarteJeu[i].length;j++) {
 				if(UtilitaireGrilleGui.listeCarteJeu[i][j].equals(c)) {
@@ -282,11 +276,11 @@ public class UtilitaireJeu {
 		}
 	}
 
-	public static void montrerUneCarte(GrilleGui gui, EtatJeu etaJ) {
-		Carte carte=ancienneCarte[etaJ.longueurSequence];
+	public static void montrerUneCarte(Carte carte,GrilleGui gui, EtatJeu etaJ) {
+		
 		mettreUneCarteVisible(carte);
 		gui.pause(Constantes.TEMPS_VISIONNEMENT);
-		mettreUneCarteInisible(carte);
+		mettreUneCarteInvisible(carte);
 		UtilitaireGrilleGui.afficherCartes(UtilitaireGrilleGui.listeCarteJeu, gui);
 	}
 
