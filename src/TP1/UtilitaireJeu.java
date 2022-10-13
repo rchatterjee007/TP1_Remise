@@ -131,7 +131,7 @@ public class UtilitaireJeu {
 
 		stats.nbEssaieActuel++;
 
-		if(UtulisateurAClic(gui)==true) {
+		if(UtilisateurAClic(gui)==true) {
 
 			Coordonnee coordonneeClic=getDernierClicPosition(gui);
 			validerClic(coordonneeClic,stats,etatJeu,gui);
@@ -176,7 +176,7 @@ public class UtilitaireJeu {
 							listeCarteJeu[xy.ligne][xy.colonne]);
 					etatJeu.ilYaSequence=false;
 					afficherMessage("LA SÉQUENCE EST BRISSÉ");
-
+					ancienCarte[etatJeu.longueurSequence]=null;
 				}
 			}
 		}		
@@ -234,7 +234,33 @@ public class UtilitaireJeu {
 	 */
 	public static void montrerLesCartes(Carte[] cartes, 
 			GrilleGui gui, EtatJeu etatJeu) {
+		mettreTouslesCartesVisible();
+		etatJeu.partieTerminee=false;
+		UtilitaireGrilleGui.afficherCartes(UtilitaireGrilleGui.
+				listeCarteJeu, gui);
+		afficherMessage("Attention, vous trichez!");
+		gui.pause(Constantes.TEMPS_VISIONNEMENT);
+		mettreTouslesCartesInvisible();
+		UtilitaireGrilleGui.afficherCartes(UtilitaireGrilleGui.
+				listeCarteJeu, gui);
+	}
 
+
+	public static void mettreTouslesCartesVisible() {
+		Carte[][] cartesDuJeu= UtilitaireGrilleGui.listeCarteJeu;
+		for(int i=0;i<UtilitaireGrilleGui.listeCarteJeu.length;i++) {
+			for(int j=0;j<UtilitaireGrilleGui.listeCarteJeu[i].length;j++) {
+				mettreUneCarteVisible(UtilitaireGrilleGui.listeCarteJeu[i][j]);
+			}
+		}
+	}
+	public static void mettreTouslesCartesInvisible() {
+		Carte[][] cartesDuJeu= UtilitaireGrilleGui.listeCarteJeu;
+		for(int i=0;i<UtilitaireGrilleGui.listeCarteJeu.length;i++) {
+			for(int j=0;j<UtilitaireGrilleGui.listeCarteJeu[i].length;j++) {
+				mettreUneCarteInvisible(UtilitaireGrilleGui.listeCarteJeu[i][j]);
+			}
+		}
 	}
 
 	/**
@@ -242,17 +268,20 @@ public class UtilitaireJeu {
 	 *@return uneCarte avec le numéro 2 et sorte quelquonque
 	 * */
 	public static Carte trouverCartePlusPetite() {
-		Carte carte= new Carte();
-		Carte[][] cartesDuJeu= UtilitaireGrilleGui.listeCarteJeu;
-		for(int i=0;i<cartesDuJeu.length;i++) {
-			for(int j=0;j<cartesDuJeu[i].length;j++) {
-				if(cartesDuJeu[i][j].numero==2&&
-						cartesDuJeu[i][j].visible==false) {
-					carte=cartesDuJeu[i][j];
+		int indexPetitCarte=1;
+		Carte carte= null;
+		while(carte==null) {
+			for(int i=0;i<UtilitaireGrilleGui.listeCarteJeu.length;i++) {
+				for(int j=0;j<UtilitaireGrilleGui.listeCarteJeu[i].length;j++) {
+					if(UtilitaireGrilleGui.listeCarteJeu[i][j].numero==indexPetitCarte&&
+							UtilitaireGrilleGui.listeCarteJeu[i][j].visible==false) {
+						carte=UtilitaireGrilleGui.listeCarteJeu[i][j];
+						break;
+					}
 				}
 			}
+			indexPetitCarte++;
 		}
-
 		return carte;
 	}
 
@@ -266,21 +295,36 @@ public class UtilitaireJeu {
 	public static Carte trouverCarteSuivantSequence(GrilleGui gui, 
 			EtatJeu etatJeu) {
 		Carte carteSuivante=new Carte();
-		Carte carteCourante=ancienCarte[etatJeu.longueurSequence];
-		for(int i=0;i<UtilitaireGrilleGui.listeCarteJeu.length;i++) {
-			for(int j=0;j<UtilitaireGrilleGui.listeCarteJeu[i].length;j++) {
-				if(carteCourante.numero>=1&&carteCourante.numero<
-						Constantes.CARTES_PAR_SORTES&&
-						carteCourante.couleur.equals(UtilitaireGrilleGui.
-								listeCarteJeu[i][j].couleur)&&
-						UtilitaireGrilleGui.listeCarteJeu[i][j].numero+1==
-						carteCourante.numero) {
-					carteSuivante=UtilitaireGrilleGui.listeCarteJeu[i][j];
-				}
-				if(carteCourante.numero==Constantes.CARTES_PAR_SORTES) {
-					carteSuivante=trouverCartePlusPetite();
+		if(UtilisateurAClic(gui)==true) {
+			Coordonnee c= getDernierClicPosition(gui);
+			Carte carteCourante;
+			if(ancienCarte[etatJeu.longueurSequence]==null) {
+				carteCourante=ancienCarte[etatJeu.longueurSequence-1];
+			}
+			else {
+				carteCourante= UtilitaireGrilleGui.listeCarteJeu
+						[c.ligne][c.colonne];
+			}
+			for(int i=0;i<UtilitaireGrilleGui.listeCarteJeu.length;i++) {
+				for(int j=0;j<UtilitaireGrilleGui.listeCarteJeu[i].length;j++) {
+
+
+					if(carteCourante.numero>=1&&carteCourante.numero<
+							Constantes.CARTES_PAR_SORTES-1&&
+							carteCourante.couleur.equals(UtilitaireGrilleGui.
+									listeCarteJeu[i][j].couleur)&&
+							UtilitaireGrilleGui.listeCarteJeu[i][j].numero==
+							carteCourante.numero+1) {
+						carteSuivante=UtilitaireGrilleGui.listeCarteJeu[i][j];
+					}
+					if(carteCourante.numero==Constantes.CARTES_PAR_SORTES) {
+						carteSuivante=trouverCartePlusPetite();
+					}
+
 				}
 			}
+		}else {
+			afficherMessage("VEUILLEZ SÉLECTIONNER UNE CARTE");
 		}
 		return carteSuivante;
 	}
@@ -296,6 +340,8 @@ public class UtilitaireJeu {
 	public static void montrerUneCarte(Carte carte,GrilleGui gui) {
 
 		mettreUneCarteVisible(carte);
+		UtilitaireGrilleGui.afficherCartes(UtilitaireGrilleGui.
+				listeCarteJeu, gui);
 		gui.pause(Constantes.TEMPS_VISIONNEMENT);
 		mettreUneCarteInvisible(carte);
 		UtilitaireGrilleGui.afficherCartes(UtilitaireGrilleGui.
@@ -312,6 +358,7 @@ public class UtilitaireJeu {
 	 * */
 	public static void montrerIndices(Carte[] cartes, 
 			GrilleGui gui, EtatJeu etatJeu) {
+
 		Carte carte= new Carte();
 		if(etatJeu.nbIndices==0) {
 			afficherMessage("VOUS N'AVEZ AUCUN INDICES RESTANT");
@@ -398,7 +445,7 @@ public class UtilitaireJeu {
 	 * @param gui = Gui principale
 	 * @return true si le gui a retenu une coordonnee de carte
 	 * */
-	public static boolean UtulisateurAClic(GrilleGui gui) {
+	public static boolean UtilisateurAClic(GrilleGui gui) {
 		boolean clic= true;
 
 		if(getDernierClicPosition(gui)==null) {
