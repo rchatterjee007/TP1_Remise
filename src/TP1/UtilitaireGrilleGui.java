@@ -35,14 +35,5 @@ public class UtilitaireGrilleGui {
 				
 			}
 		}
-	}
-
-	
-	public static void montreLaCarte(Coordonnee c,GrilleGui gui) {		
-			Carte carte= listeCarteJeu[c.ligne][c.ligne];
-			listeCarteJeu[c.ligne][c.ligne].visible=true;
-			gui.setImage(c.ligne, c.colonne, carte.image);
-	}
-	
-	
+	}	
 }

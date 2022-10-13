@@ -10,6 +10,10 @@ import javax.swing.JOptionPane;
  * @author Simon Pitre Lamas, Radhika Chatterjee
  */
 public class UtilitaireJeu {
+	
+	static Carte[] ancienneCarte;
+	
+	
 
 	/**
 	 * Initialise le jeu avant d'effectuer un tour.
@@ -67,6 +71,8 @@ public class UtilitaireJeu {
 
 		//Afficher les carte temporaire.
 		UtilitaireTableauCartes.afficherCartes(cartesTemporaire, gui);
+		etatjeu.tabSequence= new int[Constantes.NB_CARTES];
+		ancienneCarte= new Carte[Constantes.NB_CARTES];
 	}
 
 	/*
@@ -132,26 +138,27 @@ public class UtilitaireJeu {
 		}
 	}
 
-
+	/**
+	 * Méthode qui gere les séquences de cartes
+	 * */
 	public static void gererSequence(Coordonnee xy,Stats stats, EtatJeu etaJ, GrilleGui gui) {
 		if(etaJ.longueurSequence==0) {
 			etaJ.longueurSequence++;
 		}
 		else {
-			Coordonnee c= getDernierClicPosition(gui);
-			Carte ancienne= trouverCartesDuJeuAvecPosition(gui,etaJ.tabSequence[etaJ.longueurSequence]);
+			Carte ancienne=ancienneCarte[etaJ.longueurSequence-1];
 			Carte presentementClic= UtilitaireGrilleGui.listeCarteJeu[xy.ligne][xy.colonne];
-
+			System.out.println(ancienne.numero);
+			//System.out.println(presentementClic.numero);
 			if(ancienne!=null && presentementClic!=null) {
-				System.out.println(ancienne!=null);
-				System.out.println(presentementClic!=null);
 				if(UtilitaireTableauCartes.lesCartesSeSuivent(ancienne,presentementClic)==true) {
 					etaJ.ilYaSequence=true;
 					etaJ.longueurSequence++;
-				}
-				else {
-					afficherMessage("LA SÉQUENCE EST BRISSÉ");
+				}else {
 					UtilitaireGrilleGui.listeCarteJeu[xy.ligne][xy.colonne].visible=false;
+					etaJ.ilYaSequence=false;
+					afficherMessage("LA SÉQUENCE EST BRISSÉ");
+
 				}
 			}
 		}		
@@ -160,37 +167,21 @@ public class UtilitaireJeu {
 		}
 	}
 
-
+	/**
+	 * Méthode qui valide si la carte cliqué est visible ou non;
+	 * */
 	public static void validerClic(Coordonnee c,Stats stats, EtatJeu etaJ, GrilleGui gui) {
 
-		//CARTE ANCIENNE
+
 		if(UtilitaireGrilleGui.listeCarteJeu[c.ligne][c.colonne].visible==true) {
 			afficherMessage("VOUS AVEZ PERDU! LE COUP");
 		}else {
-			etaJ.tabSequence[etaJ.longueurSequence]=convertirPositionEn1D(gui,c);
+			etaJ.tabSequence[etaJ.longueurSequence]=convertirPositionEn2D(gui,c);
+			ancienneCarte[etaJ.longueurSequence]=UtilitaireGrilleGui.listeCarteJeu[c.ligne][c.colonne];
 			UtilitaireGrilleGui.listeCarteJeu[c.ligne][c.colonne].visible=true;
-
 		}
 		stats.nbEssaieActuel++;
 	}
-
-	public static Carte trouverCartesDuJeuAvecPosition(GrilleGui gui,int position) {
-		Carte carte= new Carte();
-
-
-		Carte[][] cartesGrille= UtilitaireGrilleGui.listeCarteJeu;//reproduire la grille
-		for(int i=0;i<cartesGrille.length;i++) {
-			for(int j=0;j<cartesGrille[i].length;j++) {
-				Coordonnee xy= initialiserCoordonnee(i,j);
-				int positionCarte=convertirPositionEn1D(gui,xy);
-				if(positionCarte==position) {
-					carte=cartesGrille[i][j];
-				}
-			}
-		}
-		return carte;
-	}
-
 
 	public static Coordonnee initialiserCoordonnee(int x, int y) {
 		Coordonnee xy= new Coordonnee();
@@ -208,17 +199,97 @@ public class UtilitaireJeu {
 	 */
 	public static void montrerLesCartes(Carte[] cartes, 
 			GrilleGui gui, EtatJeu etatJeu) {
-		UtilitaireTableauCartes.afficherCartes(cartes, gui);
+
 	}
 
+	/**
+	 * Aviser qu’il n’y a plus d’indices possibles si on dépasse 5
+	 * S'il n'y a pas de séquence en cours, on montre la plus petite carte qu’on rencontre d’une sorte quelconque.
+	 * */
+	public static Carte trouverCartePlusPetite() {
+		Carte carte= new Carte();
+		Carte[][] cartesDuJeu= UtilitaireGrilleGui.listeCarteJeu;
+		for(int i=0;i<cartesDuJeu.length;i++) {
+			for(int j=0;j<cartesDuJeu[i].length;j++) {
+				if(cartesDuJeu[i][j].numero==2&cartesDuJeu[i][j].visible==false) {
+					carte=cartesDuJeu[i][j];
+				}
+			}
+		}
 
+		return carte;
+	}
 
+	public static Carte trouverCarteSuivantSequence(GrilleGui gui, EtatJeu etaJ) {
+		Carte carte= ancienneCarte[etaJ.longueurSequence];
+		Carte carte2= new Carte();
+		Carte[][] cartesDuJeu= UtilitaireGrilleGui.listeCarteJeu;
+		for(int i=0;i<cartesDuJeu.length;i++) {
+			for(int j=0;j<cartesDuJeu[i].length;j++) {
+				if(carte.numero>=1&&carte.numero<Constantes.CARTES_PAR_SORTES) {
+					if((carte.numero+1)==cartesDuJeu[i][j].numero&&
+							carte.couleur.equals(cartesDuJeu[i][j].couleur)) {
+						carte2=cartesDuJeu[i][j];	
+					}
+				}
+				if(carte.numero==Constantes.CARTES_PAR_SORTES) {
+					carte2=trouverCartePlusPetite();
+				}
+			}
+		}
+
+		return carte2;
+	}
 
 	public static void montrerIndices(Carte[] cartes, 
 			GrilleGui gui, EtatJeu etatJeu) {
-		String message = "Votre nombre d'indice est  : "+etatJeu.nbIndices;	
-		afficherMessage(message);
+
+		Carte carte= new Carte();
+		Carte ancienne= ancienneCarte[etatJeu.longueurSequence];
+		if(etatJeu.nbIndices==0) {
+			String message = ("VOUS AVEZ PLUS D'INDICES!");	
+			afficherMessage(message);
+		}
+		else {
+			etatJeu.nbIndices--;
+			if(etatJeu.ilYaSequence==false) {
+				carte=trouverCartePlusPetite();
+				montrerUneCarte(gui,etatJeu);
+			}
+			else {
+				carte=trouverCarteSuivantSequence(gui,etatJeu);
+				montrerUneCarte(gui,etatJeu);
+			}
+		}
 	}
+
+	public static void mettreUneCarteVisible(Carte c) {	
+		for(int i=0;i<UtilitaireGrilleGui.listeCarteJeu.length;i++) {
+			for(int j=0;j<UtilitaireGrilleGui.listeCarteJeu[i].length;j++) {
+				if(UtilitaireGrilleGui.listeCarteJeu[i][j].equals(c)) {
+					UtilitaireGrilleGui.listeCarteJeu[i][j].visible=true;
+				}
+			}
+		}
+	}
+	public static void mettreUneCarteInisible(Carte c) {	
+		for(int i=0;i<UtilitaireGrilleGui.listeCarteJeu.length;i++) {
+			for(int j=0;j<UtilitaireGrilleGui.listeCarteJeu[i].length;j++) {
+				if(UtilitaireGrilleGui.listeCarteJeu[i][j].equals(c)) {
+					UtilitaireGrilleGui.listeCarteJeu[i][j].visible=false;
+				}
+			}
+		}
+	}
+
+	public static void montrerUneCarte(GrilleGui gui, EtatJeu etaJ) {
+		Carte carte=ancienneCarte[etaJ.longueurSequence];
+		mettreUneCarteVisible(carte);
+		gui.pause(Constantes.TEMPS_VISIONNEMENT);
+		mettreUneCarteInisible(carte);
+		UtilitaireGrilleGui.afficherCartes(UtilitaireGrilleGui.listeCarteJeu, gui);
+	}
+
 
 
 	/**
@@ -233,7 +304,7 @@ public class UtilitaireJeu {
 	/**
 	 * Convertir la position de 2D à 1D (ligne * nombre de colonnes + colonne) .
 	 * */
-	public static int convertirPositionEn1D(GrilleGui gui,Coordonnee coordonnee ) {
+	public static int convertirPositionEn2D(GrilleGui gui,Coordonnee coordonnee ) {
 		int position=0;
 		if(coordonnee!=null) {
 			position=(coordonnee.ligne*gui.getNbColonnes())+coordonnee.colonne;
@@ -246,12 +317,12 @@ public class UtilitaireJeu {
 	}
 
 	public static boolean UtulisateurAClic(GrilleGui gui) {
-		boolean BEENCLICKED= true;
+		boolean clic= true;
 
 		if(gui.getPosition()==null) {
-			BEENCLICKED=false;
+			clic=false;
 		}
-		return BEENCLICKED;
+		return clic;
 	}
 
 
