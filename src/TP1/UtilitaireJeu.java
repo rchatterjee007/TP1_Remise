@@ -201,6 +201,7 @@ public class UtilitaireJeu {
 		if(UtilitaireGrilleGui.listeCarteJeu
 				[coordonnee.ligne][coordonnee.colonne].visible==true) {
 			afficherMessage("VOUS AVEZ PERDU! LE COUP");
+			etatJeu.partieTerminee=true;
 		}else {
 			etatJeu.tabSequence[etatJeu.longueurSequence]=
 					convertirPositionEn2D(gui,coordonnee);
@@ -273,8 +274,10 @@ public class UtilitaireJeu {
 		while(carte==null) {
 			for(int i=0;i<UtilitaireGrilleGui.listeCarteJeu.length;i++) {
 				for(int j=0;j<UtilitaireGrilleGui.listeCarteJeu[i].length;j++) {
-					if(UtilitaireGrilleGui.listeCarteJeu[i][j].numero==indexPetitCarte&&
-							UtilitaireGrilleGui.listeCarteJeu[i][j].visible==false) {
+					if(UtilitaireGrilleGui.listeCarteJeu[i][j].
+							numero==indexPetitCarte&&
+							UtilitaireGrilleGui.listeCarteJeu[i][j]
+									.visible==false) {
 						carte=UtilitaireGrilleGui.listeCarteJeu[i][j];
 						break;
 					}
