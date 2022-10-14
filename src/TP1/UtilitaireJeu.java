@@ -321,7 +321,7 @@ public class UtilitaireJeu {
 				}
 			}
 		}else {
-			afficherMessage("VEUILLEZ SÉLECTIONNER UNE CARTE");
+			carteSuivante=trouverCartePlusPetite();
 		}
 		return carteSuivante;
 	}
