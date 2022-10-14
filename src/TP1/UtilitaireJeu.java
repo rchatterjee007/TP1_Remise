@@ -228,7 +228,8 @@ public class UtilitaireJeu {
 	public static void montrerLesCartes(Carte[] cartes, 
 			GrilleGui gui, EtatJeu etatJeu) {
 		if(etatJeu.partieTerminee!=true) {
-			afficherMessage("LA PARTIE EST EN COURS... LES CARTES PEUVENT PAS ÊTRE TOURNÉS");
+			afficherMessage("LA PARTIE EST EN COURS..."
+					+ " LES CARTES PEUVENT PAS ÊTRE TOURNÉS");
 		}
 		else{
 			Carte[][] copieDesCartes= UtilitaireGrilleGui.listeCarteJeu;	
