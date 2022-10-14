@@ -28,12 +28,6 @@ public class UtilitaireJeu {
 	public static void initialiserJeu(Carte[] jeu, Carte[] carteAfficher, 
 			GrilleGui gui, EtatJeu etatjeu) {
 
-
-		//carteAfficher= UtilitaireTableauCartes.brasser(carteAfficher);
-		//UtilitaireTableauCartes.afficherCartes(carteAfficher, gui);
-		//UtilitaireGrilleGui.cacherCartes(gui);
-		//timerPourCacherCartes(gui);
-
 		//Melanger les cartes.
 		carteAfficher=brasserCartesSelonChoix(carteAfficher);
 
@@ -197,7 +191,6 @@ public class UtilitaireJeu {
 	public static void validerClic(Coordonnee coordonnee,Stats stats, 
 			EtatJeu etatJeu, GrilleGui gui) {
 
-
 		if(UtilitaireGrilleGui.listeCarteJeu
 				[coordonnee.ligne][coordonnee.colonne].visible==true) {
 			afficherMessage("VOUS AVEZ PERDU! LE COUP");
@@ -210,7 +203,6 @@ public class UtilitaireJeu {
 			mettreUneCarteVisible(UtilitaireGrilleGui.
 					listeCarteJeu[coordonnee.ligne][coordonnee.colonne]);
 		}
-		stats.nbEssaieActuel++;
 	}
 
 	/**
