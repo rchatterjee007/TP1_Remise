@@ -227,15 +227,17 @@ public class UtilitaireJeu {
 	 */
 	public static void montrerLesCartes(Carte[] cartes, 
 			GrilleGui gui, EtatJeu etatJeu) {
-		mettreTouslesCartesVisible();
-		etatJeu.partieTerminee=false;
-		UtilitaireGrilleGui.afficherCartes(UtilitaireGrilleGui.
-				listeCarteJeu, gui);
-		afficherMessage("Attention, vous trichez!");
-		gui.pause(Constantes.TEMPS_VISIONNEMENT);
-		mettreTouslesCartesInvisible();
-		UtilitaireGrilleGui.afficherCartes(UtilitaireGrilleGui.
-				listeCarteJeu, gui);
+		if(etatJeu.partieTerminee!=true) {
+			afficherMessage("LA PARTIE EST EN COURS... LES CARTES PEUVENT PAS ÊTRE TOURNÉS");
+		}
+		else{
+			Carte[][] copieDesCartes= UtilitaireGrilleGui.listeCarteJeu;	
+			mettreTouslesCartesVisible();
+			UtilitaireGrilleGui.afficherCartes(UtilitaireGrilleGui.
+					listeCarteJeu, gui);
+			gui.pause(Constantes.TEMPS_VISIONNEMENT);
+			UtilitaireGrilleGui.afficherCartes(copieDesCartes, gui);
+		}
 	}
 
 
